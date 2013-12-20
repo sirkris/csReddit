@@ -9,9 +9,9 @@ using System.Text.RegularExpressions;
 
 namespace csReddit
 {
-    internal static class REST
+    public static class REST
     {
-        internal static HttpWebResponse Query(string method, string URL, string Params = "", CookieContainer cookies = default(CookieContainer), Dictionary<string, string> headers = default(Dictionary<string, string>), Dictionary<string, string> files = default(Dictionary<string, string>))
+        public static HttpWebResponse Query(string method, string URL, string Params = "", CookieContainer cookies = default(CookieContainer), Dictionary<string, string> headers = default(Dictionary<string, string>), Dictionary<string, string> files = default(Dictionary<string, string>))
         {
             switch (method.ToUpper().Trim())
             {
@@ -108,7 +108,7 @@ namespace csReddit
                 case "DELETE":
                 case "POST":
                 case "PUT":
-                    if (files.Count == 0)
+                    if (files == default(Dictionary<string, string>) || files.Count == 0)
                     {
                         byte[] datastream = Encoding.UTF8.GetBytes(Params);
 
@@ -196,7 +196,7 @@ namespace csReddit
             return response;
         }
 
-        internal static Dictionary<string, string> ProcessQueryResponse(HttpWebResponse response)
+        public static Dictionary<string, string> ProcessQueryResponse(HttpWebResponse response)
         {
             /* We really only need the body and *maybe* the status, but this will allow for easier debugging without returning the entire raw response object.  --Kris */
             Dictionary<string, string> ret = new Dictionary<string, string>();
@@ -218,7 +218,7 @@ namespace csReddit
         }
 
         /* Overload that saves cookies.  --Kris */
-        internal static Dictionary<string, string> ProcessQueryResponse(HttpWebResponse response, out CookieCollection cookiecollection)
+        public static Dictionary<string, string> ProcessQueryResponse(HttpWebResponse response, out CookieCollection cookiecollection)
         {
             /* We really only need the body and *maybe* the status, but this will allow for easier debugging without returning the entire raw response object.  --Kris */
             Dictionary<string, string> ret = new Dictionary<string, string>();
@@ -241,12 +241,12 @@ namespace csReddit
             return ret;
         }
 
-        internal static string exP(string p, Dictionary<string, string> exP)
+        public static string exP(string p, Dictionary<string, string> exP)
         {
             return (exP.ContainsKey(p) ? exP[p] : "");
         }
 
-        internal static Dictionary<string, string> ValidateReturnData(Dictionary<string, string> ret, Dictionary<string, string> exPs = default(Dictionary<string, string>))
+        public static Dictionary<string, string> ValidateReturnData(Dictionary<string, string> ret, Dictionary<string, string> exPs = default(Dictionary<string, string>), bool strict = false)
         {
             Dictionary<string, string> validate = new Dictionary<string, string>();
             int ratelimit = 0;
@@ -331,7 +331,7 @@ namespace csReddit
                             ret["Body"].IndexOf(@"}") - (ret["Body"].IndexOf("\"errors\": ") + 10));
                     }
                 }
-                else
+                else if (strict == true)
                 {
                     validate["error"] = "Login failure!";
                 }
@@ -344,68 +344,91 @@ namespace csReddit
             return validate;
         }
 
-        internal static Dictionary<string, string> GET(string URL, string Params = "", CookieContainer cookies = default(CookieContainer), 
+        public static Dictionary<string, string> GET(string URL, string Params = "", CookieContainer cookies = default(CookieContainer), 
             Dictionary<string, string> headers = default(Dictionary<string, string>))
         {
             return ProcessQueryResponse(Query("GET", URL, Params, cookies, headers));
         }
 
-        internal static Dictionary<string, string> GETC(out CookieCollection cookiecollection, string URL, string Params = "", CookieContainer cookies = default(CookieContainer),
+        public static Dictionary<string, string> GETC(out CookieCollection cookiecollection, string URL, string Params = "", CookieContainer cookies = default(CookieContainer),
             Dictionary<string, string> headers = default(Dictionary<string, string>))
         {
             return ProcessQueryResponse(Query("GET", URL, Params, cookies, headers), out cookiecollection);
         }
 
-        internal static Dictionary<string, string> POST(string URL, string Params = "", CookieContainer cookies = default(CookieContainer),
+        public static Dictionary<string, string> POST(string URL, string Params = "", CookieContainer cookies = default(CookieContainer),
             Dictionary<string, string> headers = default(Dictionary<string, string>), Dictionary<string, string> files = default(Dictionary<string, string>))
         {
             return ProcessQueryResponse(Query("POST", URL, Params, cookies, headers, files));
         }
 
-        internal static Dictionary<string, string> POSTC(out CookieCollection cookiecollection, string URL, string Params = "", CookieContainer cookies = default(CookieContainer),
+        public static Dictionary<string, string> POSTC(out CookieCollection cookiecollection, string URL, string Params = "", CookieContainer cookies = default(CookieContainer),
             Dictionary<string, string> headers = default(Dictionary<string, string>), Dictionary<string, string> files = default(Dictionary<string, string>))
         {
             return ProcessQueryResponse(Query("POST", URL, Params, cookies, headers, files), out cookiecollection);
         }
 
-        internal static Dictionary<string, string> PUT(string URL, string Params = "", CookieContainer cookies = default(CookieContainer),
+        public static Dictionary<string, string> PUT(string URL, string Params = "", CookieContainer cookies = default(CookieContainer),
             Dictionary<string, string> headers = default(Dictionary<string, string>), Dictionary<string, string> files = default(Dictionary<string, string>))
         {
             return ProcessQueryResponse(Query("PUT", URL, Params, cookies, headers, files));
         }
 
-        internal static Dictionary<string, string> PUTC(out CookieCollection cookiecollection, string URL, string Params = "", CookieContainer cookies = default(CookieContainer),
+        public static Dictionary<string, string> PUTC(out CookieCollection cookiecollection, string URL, string Params = "", CookieContainer cookies = default(CookieContainer),
             Dictionary<string, string> headers = default(Dictionary<string, string>), Dictionary<string, string> files = default(Dictionary<string, string>))
         {
             return ProcessQueryResponse(Query("PUT", URL, Params, cookies, headers, files), out cookiecollection);
         }
 
-        internal static Dictionary<string, string> DELETE(string URL, string Params = "", CookieContainer cookies = default(CookieContainer),
+        public static Dictionary<string, string> DELETE(string URL, string Params = "", CookieContainer cookies = default(CookieContainer),
             Dictionary<string, string> headers = default(Dictionary<string, string>), Dictionary<string, string> files = default(Dictionary<string, string>))
         {
             return ProcessQueryResponse(Query("DELETE", URL, Params, cookies, headers, files));
         }
 
-        internal static Dictionary<string, string> DELETEC(out CookieCollection cookiecollection, string URL, string Params = "", CookieContainer cookies = default(CookieContainer),
+        public static Dictionary<string, string> DELETEC(out CookieCollection cookiecollection, string URL, string Params = "", CookieContainer cookies = default(CookieContainer),
             Dictionary<string, string> headers = default(Dictionary<string, string>), Dictionary<string, string> files = default(Dictionary<string, string>))
         {
             return ProcessQueryResponse(Query("DELETE", URL, Params, cookies, headers, files), out cookiecollection);
         }
 
-        internal static Dictionary<string, string> json_decode(string json)
+        public static Dictionary<string, string> json_decode(string json)
         {
             return JsonConvert.DeserializeObject<Dictionary<string, string>>(json);
         }
 
-        internal static string json_encode(Dictionary<string, string> data)
+        public static string json_encode(Dictionary<string, string> data)
         {
             return JsonConvert.SerializeObject(data);
         }
 
         /* Clean-up the JSON string before parsing.  Avoids a lot of messy issues and we're only interested in the "data" contents, anyway.  --Kris */
-        internal static string json_prepare(string json)
+        public static string json_prepare(string json)
         {
+            // Basically just grabs the inner-most (last) {} section of the JSON since recursive parsing isn't natively supported.  TODO?  --Kris
             return json.Substring(json.LastIndexOf(@"{"), json.Substring(json.LastIndexOf(@"{")).Length - 1);
+        }
+
+        public static bool is_json(string body)
+        {
+            return ((body.IndexOf(@"{") == 0 || body.IndexOf(@"[") == 0)
+                && char_count(body, '{') == char_count(body, '}')
+                && char_count(body, '[') == char_count(body, ']'));
+        }
+
+        /* Bulkier code but performs considerably better than one-liner splits/etc.  --Kris */
+        public static int char_count(string s, char c)
+        {
+            int i = 0;
+            foreach (char sc in s)
+            {
+                if (sc == c)
+                {
+                    i++;
+                }
+            }
+
+            return i;
         }
     }
 }

@@ -46,6 +46,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Account.cs" />
+    <Compile Include="API.cs" />
     <Compile Include="Apps.cs" />
     <Compile Include="Captcha.cs" />
     <Compile Include="Flair.cs" />

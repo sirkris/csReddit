@@ -66,7 +66,7 @@ namespace csReddit
             
             if (ret["StatusCode"] == "200")
             {
-                validate = REST.ValidateReturnData(ret, new Dictionary<string, string>() { { "username", username }, { "password", password } });
+                validate = REST.ValidateReturnData(ret, new Dictionary<string, string>() { { "username", username }, { "password", password } }, true);
                 if (CheckValidation(validate) == false)
                 {
                     return false;

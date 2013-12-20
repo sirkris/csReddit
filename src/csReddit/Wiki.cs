@@ -115,7 +115,7 @@ namespace csReddit
             else
             {
                 error = "ERROR in " + System.Reflection.MethodBase.GetCurrentMethod().Name + " : " + ret["StatusDescription"] + @" (" + ret["StatusCode"] + @")";
-
+                
                 return new Dictionary<string, string>();
             }
         }

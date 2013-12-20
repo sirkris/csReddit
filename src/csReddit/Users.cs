@@ -92,29 +92,12 @@ namespace csReddit
             }
         }
 
-        public Dictionary<string, string> username_available(string user)
+        public bool username_available(string user)
         {
-            Dictionary<string, string> ret = REST.GET(@"http://www.reddit.com/api/username_available.json",
-                @"user=" + user,
-                Account.cookies, Account.authheaders);
+            string ret = API.Retrieve("/api/username_available.json", "GET", System.Reflection.MethodBase.GetCurrentMethod().Name,
+                Account, new List<string> { "user" }, new object[] { user });
 
-            if (ret["StatusCode"] == "200")
-            {
-                if (Account.CheckValidation(REST.ValidateReturnData(ret)) == true)
-                {
-                    return REST.json_decode(REST.json_prepare(ret["Body"]));
-                }
-                else
-                {
-                    return new Dictionary<string, string>();
-                }
-            }
-            else
-            {
-                error = "ERROR in " + System.Reflection.MethodBase.GetCurrentMethod().Name + " : " + ret["StatusDescription"] + @" (" + ret["StatusCode"] + @")";
-
-                return new Dictionary<string, string>();
-            }
+            return API.to_bool(ret);
         }
 
         public Dictionary<string, string> about(string username)
