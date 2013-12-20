@@ -18,83 +18,29 @@ namespace csReddit
 
         public Dictionary<string, string> friend(string container, string name, string note, string permissions, string type)
         {
-            Dictionary<string, string> ret = REST.POST(@"http://www.reddit.com/api/friend", 
-                @"container=" + container + @"&note=" + note + @"&permissions=" + permissions + @"&type=" + type
-                + @"&api_type=json", Account.cookies, Account.authheaders);
-
-            if (ret["StatusCode"] == "200")
-            {
-                if (Account.CheckValidation(REST.ValidateReturnData(ret)) == true)
-                {
-                    return REST.json_decode(REST.json_prepare(ret["Body"]));
-                }
-                else
-                {
-                    return new Dictionary<string, string>();
-                }
-            }
-            else
-            {
-                error = "ERROR in " + System.Reflection.MethodBase.GetCurrentMethod().Name + " : " + ret["StatusDescription"] + @" (" + ret["StatusCode"] + @")";
-
-                return new Dictionary<string, string>();
-            }
+            return API.Retrieve_JSON(@"/api/friend", "POST", System.Reflection.MethodBase.GetCurrentMethod().Name,
+                Account, new List<string> { "container", "note", "permissions", "type", "api_type" },
+                new object[] { container, note, permissions, type, "json" });
         }
 
         public Dictionary<string, string> setpermissions(string name, string permissions, string type, string subreddit = "")
         {
-            Dictionary<string, string> ret = REST.POST(@"http://www.reddit.com" + (subreddit != "" ? @"/r/" + subreddit : "")
-                + @"/api/setpermissions", 
-                @"name=" + name + @"&permissions=" + permissions + @"&type=" + type
-                + @"&api_type=json", Account.cookies, Account.authheaders);
-
-            if (ret["StatusCode"] == "200")
-            {
-                if (Account.CheckValidation(REST.ValidateReturnData(ret)) == true)
-                {
-                    return REST.json_decode(REST.json_prepare(ret["Body"]));
-                }
-                else
-                {
-                    return new Dictionary<string, string>();
-                }
-            }
-            else
-            {
-                error = "ERROR in " + System.Reflection.MethodBase.GetCurrentMethod().Name + " : " + ret["StatusDescription"] + @" (" + ret["StatusCode"] + @")";
-
-                return new Dictionary<string, string>();
-            }
+            return API.Retrieve_JSON((subreddit != "" ? @"/r/" + subreddit : "")
+                + @"/api/setpermissions", "POST", System.Reflection.MethodBase.GetCurrentMethod().Name,
+                Account, new List<string> { "name", "permissions", "type", "api_type" },
+                new object[] { name, permissions, type, "json" });
         }
 
         public Dictionary<string, string> unfriend(string container, string id, string name, string type)
         {
-            Dictionary<string, string> ret = REST.POST(@"http://www.reddit.com/api/unfriend",
-                @"container=" + container + @"&id=" + id + @"&name=" + name + @"&type=" + type,
-                Account.cookies, Account.authheaders);
-
-            if (ret["StatusCode"] == "200")
-            {
-                if (Account.CheckValidation(REST.ValidateReturnData(ret)) == true)
-                {
-                    return REST.json_decode(REST.json_prepare(ret["Body"]));
-                }
-                else
-                {
-                    return new Dictionary<string, string>();
-                }
-            }
-            else
-            {
-                error = "ERROR in " + System.Reflection.MethodBase.GetCurrentMethod().Name + " : " + ret["StatusDescription"] + @" (" + ret["StatusCode"] + @")";
-
-                return new Dictionary<string, string>();
-            }
+            return API.Retrieve_JSON(@"/api/unfriend", "POST", System.Reflection.MethodBase.GetCurrentMethod().Name,
+                Account, new List<string> { "container", "id", "name", "type" },
+                new object[] { container, id, name, type });
         }
 
         public bool username_available(string user)
         {
-            string ret = API.Retrieve("/api/username_available.json", "GET", System.Reflection.MethodBase.GetCurrentMethod().Name,
+            string ret = API.Retrieve(@"/api/username_available.json", "GET", System.Reflection.MethodBase.GetCurrentMethod().Name,
                 Account, new List<string> { "user" }, new object[] { user });
 
             return API.to_bool(ret);
@@ -102,54 +48,18 @@ namespace csReddit
 
         public Dictionary<string, string> about(string username)
         {
-            Dictionary<string, string> ret = REST.GET(@"http://www.reddit.com/user/" + username + @"/about.json",
-                @"",
-                Account.cookies, Account.authheaders);
-
-            if (ret["StatusCode"] == "200")
-            {
-                if (Account.CheckValidation(REST.ValidateReturnData(ret)) == true)
-                {
-                    return REST.json_decode(REST.json_prepare(ret["Body"]));
-                }
-                else
-                {
-                    return new Dictionary<string, string>();
-                }
-            }
-            else
-            {
-                error = "ERROR in " + System.Reflection.MethodBase.GetCurrentMethod().Name + " : " + ret["StatusDescription"] + @" (" + ret["StatusCode"] + @")";
-
-                return new Dictionary<string, string>();
-            }
+            return API.Retrieve_JSON(@"/user/" + username + @"/about.json", "GET",
+                System.Reflection.MethodBase.GetCurrentMethod().Name,
+                Account, new List<string> { }, new object[] { });
         }
 
         public Dictionary<string, string> get_user(string username, string where, string show, string sort, string t, 
             string after, string before, int count = 0, int limit = 25)
         {
-            Dictionary<string, string> ret = REST.GET(@"http://www.reddit.com/user/" + username + @"/" + where,
-                @"show=" + show + @"&sort=" + sort + @"&t=" + t + @"&username=" + username 
-                + @"&after=" + after + @"&before=" + before + @"&count=" + count.ToString() + @"&limit=" + limit.ToString(),
-                Account.cookies, Account.authheaders);
-
-            if (ret["StatusCode"] == "200")
-            {
-                if (Account.CheckValidation(REST.ValidateReturnData(ret)) == true)
-                {
-                    return REST.json_decode(REST.json_prepare(ret["Body"]));
-                }
-                else
-                {
-                    return new Dictionary<string, string>();
-                }
-            }
-            else
-            {
-                error = "ERROR in " + System.Reflection.MethodBase.GetCurrentMethod().Name + " : " + ret["StatusDescription"] + @" (" + ret["StatusCode"] + @")";
-
-                return new Dictionary<string, string>();
-            }
+            return API.Retrieve_JSON(@"/user/" + username + @"/" + where, "GET",
+                System.Reflection.MethodBase.GetCurrentMethod().Name,
+                Account, new List<string> { "show", "sort", "t", "username", "after", "before", "count", "limit" },
+                new object[] { show, sort, t, username, after, before, count.ToString(), limit.ToString() });
         }
 
         public Users() : this(null) { }
