@@ -39,16 +39,6 @@ namespace csReddit
             return restvars;
         }
 
-        public static Type test(string path, string rest_method, string caller_method, Account Account,
-            List<string> vars, params object[] vals)
-        {
-            Dictionary<string, string> ret = new Dictionary<string, string>();
-
-            Type t = Type.GetType("csReddit.REST");
-
-            return t;
-        }
-
         public static string Retrieve(string path, string rest_method, string caller_method, Account Account,
             List<string> vars, params object[] vals)
         {
