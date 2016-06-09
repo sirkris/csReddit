@@ -20,110 +20,45 @@ namespace csReddit
 
         public bool adddeveloper(string client_id, string name)
         {
-            Dictionary<string, string> ret = REST.POST(@"http://www.reddit.com/api/adddeveloper",
-                @"client_id=" + client_id + @"&name=" + name
-                + @"&api_type=json", Account.cookies, Account.authheaders);
-
-            if (ret["StatusCode"] == "200")
-            {
-                return Account.CheckValidation(REST.ValidateReturnData(ret));
-            }
-            else
-            {
-                error = "ERROR in " + System.Reflection.MethodBase.GetCurrentMethod().Name + " : " + ret["StatusDescription"] + @" (" + ret["StatusCode"] + @")";
-
-                return false;
-            }
+            return (API.Retrieve(@"/api/adddeveloper", "POST", System.Reflection.MethodBase.GetCurrentMethod().Name,
+                Account, new List<string> { "client_id", "name", "api_type" },
+                new object[] { client_id, name, "json" }) != "");
         }
 
         public bool deleteapp(string client_id)
         {
-            Dictionary<string, string> ret = REST.POST(@"http://www.reddit.com/api/deleteapp",
-                @"client_id=" + client_id
-                + @"&api_type=json", Account.cookies, Account.authheaders);
-
-            if (ret["StatusCode"] == "200")
-            {
-                return Account.CheckValidation(REST.ValidateReturnData(ret));
-            }
-            else
-            {
-                error = "ERROR in " + System.Reflection.MethodBase.GetCurrentMethod().Name + " : " + ret["StatusDescription"] + @" (" + ret["StatusCode"] + @")";
-
-                return false;
-            }
+            return (API.Retrieve(@"/api/deleteapp", "POST", System.Reflection.MethodBase.GetCurrentMethod().Name,
+                Account, new List<string> { "client_id", "api_type" },
+                new object[] { client_id, "json" }) != "");
         }
 
         public bool removedeveloper(string client_id, string name)
         {
-            Dictionary<string, string> ret = REST.POST(@"http://www.reddit.com/api/removedeveloper",
-                @"client_id=" + client_id + @"&name=" + name
-                + @"&api_type=json", Account.cookies, Account.authheaders);
-
-            if (ret["StatusCode"] == "200")
-            {
-                return Account.CheckValidation(REST.ValidateReturnData(ret));
-            }
-            else
-            {
-                error = "ERROR in " + System.Reflection.MethodBase.GetCurrentMethod().Name + " : " + ret["StatusDescription"] + @" (" + ret["StatusCode"] + @")";
-
-                return false;
-            }
+            return (API.Retrieve(@"/api/removedeveloper", "POST", System.Reflection.MethodBase.GetCurrentMethod().Name,
+                Account, new List<string> { "client_id", "name", "api_type" },
+                new object[] { client_id, name, "json" }) != "");
         }
 
         public bool revokeapp(string client_id)
         {
-            Dictionary<string, string> ret = REST.POST(@"http://www.reddit.com/api/revokeapp",
-                @"client_id=" + client_id
-                + @"&api_type=json", Account.cookies, Account.authheaders);
-
-            if (ret["StatusCode"] == "200")
-            {
-                return Account.CheckValidation(REST.ValidateReturnData(ret));
-            }
-            else
-            {
-                error = "ERROR in " + System.Reflection.MethodBase.GetCurrentMethod().Name + " : " + ret["StatusDescription"] + @" (" + ret["StatusCode"] + @")";
-
-                return false;
-            }
+            return (API.Retrieve(@"/api/revokeapp", "POST", System.Reflection.MethodBase.GetCurrentMethod().Name,
+                Account, new List<string> { "client_id", "api_type" },
+                new object[] { client_id, "json" }) != "");
         }
 
         public bool setappicon(string client_id, string filename)
         {
-            Dictionary<string, string> ret = REST.POST(@"http://www.reddit.com/api/setappicon",
-                @"client_id=" + client_id
-                + @"&api_type=json", Account.cookies, Account.authheaders, new Dictionary<string, string>() { { "file", filename } });
-
-            if (ret["StatusCode"] == "200")
-            {
-                return Account.CheckValidation(REST.ValidateReturnData(ret));
-            }
-            else
-            {
-                error = "ERROR in " + System.Reflection.MethodBase.GetCurrentMethod().Name + " : " + ret["StatusDescription"] + @" (" + ret["StatusCode"] + @")";
-
-                return false;
-            }
+            return (API.Retrieve(@"/api/setappicon", "POST", System.Reflection.MethodBase.GetCurrentMethod().Name,
+                Account, new List<string> { "client_id", "api_type" },
+                new Dictionary<string, string>() { { "file", filename } },
+                new object[] { client_id, "json" }) != "");
         }
 
         public bool updateapp(string about_url, string icon_url, string name, string redirect_uri)
         {
-            Dictionary<string, string> ret = REST.POST(@"http://www.reddit.com/api/updateapp",
-                @"about_url=" + about_url + @"&icon_url=" + icon_url + @"&name=" + name + @"&redirect_uri=" + redirect_uri 
-                + @"&api_type=json", Account.cookies, Account.authheaders);
-
-            if (ret["StatusCode"] == "200")
-            {
-                return Account.CheckValidation(REST.ValidateReturnData(ret));
-            }
-            else
-            {
-                error = "ERROR in " + System.Reflection.MethodBase.GetCurrentMethod().Name + " : " + ret["StatusDescription"] + @" (" + ret["StatusCode"] + @")";
-
-                return false;
-            }
+            return (API.Retrieve(@"/api/updateapp", "POST", System.Reflection.MethodBase.GetCurrentMethod().Name,
+                Account, new List<string> { "about_url", "icon_url", "name", "redirect_uri", "api_type" },
+                new object[] { about_url, icon_url, name, redirect_uri, "json" }) != "");
         }
     }
 }

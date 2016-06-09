@@ -58,6 +58,33 @@ namespace csReddit
                 last_error = "ERROR calling REST." + rest_method + " : " + e.Message;
             }
 
+            return Parse_Status(ret, Account, caller_method);
+        }
+
+        public static string Retrieve(string path, string rest_method, string caller_method, Account Account,
+            List<string> vars, Dictionary<string, string> files, params object[] vals)
+        {
+            Dictionary<string, string> ret = new Dictionary<string, string>();
+
+            try
+            {
+                Type t = Type.GetType("csReddit.REST");
+                MethodInfo method = t.GetMethod(rest_method, BindingFlags.Public | BindingFlags.Static);
+
+                ret = (Dictionary<string, string>)method.Invoke(null, new object[] {
+                baseurl + @"/" + path, combine_vars( vars, vals ), Account.cookies, Account.authheaders, files
+                });
+            }
+            catch (Exception e)
+            {
+                last_error = "ERROR calling REST." + rest_method + " : " + e.Message;
+            }
+
+            return Parse_Status(ret, Account, caller_method);
+        }
+
+        public static string Parse_Status(Dictionary<string, string> ret, Account Account, string caller_method)
+        {
             if (ret.ContainsKey("StatusCode") == false)
             {
                 last_error = "ERROR in API.Retrieve_JSON from " + caller_method + " : No status code returned!";

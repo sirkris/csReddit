@@ -20,193 +20,73 @@ namespace csReddit
 
         public bool clearflairtemplates(string flair_type, string subreddit = "")
         {
-            Dictionary<string, string> ret = REST.POST(@"http://www.reddit.com" + (subreddit != "" ? @"/r/" + subreddit : "") + @"/api/clearflairtemplates",
-                @"flair_type=" + flair_type
-                + @"&api_type=json", Account.cookies, Account.authheaders);
-
-            if (ret["StatusCode"] == "200")
-            {
-                return Account.CheckValidation(REST.ValidateReturnData(ret));
-            }
-            else
-            {
-                error = "ERROR in " + System.Reflection.MethodBase.GetCurrentMethod().Name + " : " + ret["StatusDescription"] + @" (" + ret["StatusCode"] + @")";
-
-                return false;
-            }
+            return (API.Retrieve((subreddit != "" ? @"/r/" + subreddit : "") + @"/api/clearflairtemplates", "POST", System.Reflection.MethodBase.GetCurrentMethod().Name,
+                Account, new List<string> { "flair_type", "api_type" },
+                new object[] { flair_type, "json" }) != "");
         }
 
         public bool deleteflair(string name, string subreddit = "")
         {
-            Dictionary<string, string> ret = REST.POST(@"http://www.reddit.com" + (subreddit != "" ? @"/r/" + subreddit : "") + @"/api/deleteflair",
-                @"name=" + name 
-                + @"&api_type=json", Account.cookies, Account.authheaders);
-
-            if (ret["StatusCode"] == "200")
-            {
-                return Account.CheckValidation(REST.ValidateReturnData(ret));
-            }
-            else
-            {
-                error = "ERROR in " + System.Reflection.MethodBase.GetCurrentMethod().Name + " : " + ret["StatusDescription"] + @" (" + ret["StatusCode"] + @")";
-
-                return false;
-            }
+            return (API.Retrieve((subreddit != "" ? @"/r/" + subreddit : "") + @"/api/deleteflair", "POST", System.Reflection.MethodBase.GetCurrentMethod().Name,
+                Account, new List<string> { "name", "api_type" },
+                new object[] { name, "json" }) != "");
         }
 
         public bool deleteflairtemplate(string flair_template_id, string subreddit = "")
         {
-            Dictionary<string, string> ret = REST.POST(@"http://www.reddit.com" + (subreddit != "" ? @"/r/" + subreddit : "") + @"/api/deleteflairtemplate",
-                @"flair_template_id=" + flair_template_id
-                + @"&api_type=json", Account.cookies, Account.authheaders);
-
-            if (ret["StatusCode"] == "200")
-            {
-                return Account.CheckValidation(REST.ValidateReturnData(ret));
-            }
-            else
-            {
-                error = "ERROR in " + System.Reflection.MethodBase.GetCurrentMethod().Name + " : " + ret["StatusDescription"] + @" (" + ret["StatusCode"] + @")";
-
-                return false;
-            }
+            return (API.Retrieve((subreddit != "" ? @"/r/" + subreddit : "") + @"/api/deleteflairtemplate", "POST", System.Reflection.MethodBase.GetCurrentMethod().Name,
+                Account, new List<string> { "flair_template_id", "api_type" },
+                new object[] { flair_template_id, "json" }) != "");
         }
 
         public bool flair(string css_class, string link, string name, string text, string subreddit = "")
         {
-            Dictionary<string, string> ret = REST.POST(@"http://www.reddit.com" + (subreddit != "" ? @"/r/" + subreddit : "") + @"/api/flair",
-                @"css_class=" + css_class + @"&link=" + link + @"&name=" + name + @"&text=" + text 
-                + @"&api_type=json", Account.cookies, Account.authheaders);
-
-            if (ret["StatusCode"] == "200")
-            {
-                return Account.CheckValidation(REST.ValidateReturnData(ret));
-            }
-            else
-            {
-                error = "ERROR in " + System.Reflection.MethodBase.GetCurrentMethod().Name + " : " + ret["StatusDescription"] + @" (" + ret["StatusCode"] + @")";
-
-                return false;
-            }
+            return (API.Retrieve((subreddit != "" ? @"/r/" + subreddit : "") + @"/api/flair", "POST", System.Reflection.MethodBase.GetCurrentMethod().Name,
+                Account, new List<string> { "css_class", "link", "name", "text", "api_type" },
+                new object[] { css_class, link, name, text, "json" }) != "");
         }
 
-        public bool flairconfig(bool flair_enabled, string flair_position, bool flair_self_assign_enabled, 
+        public bool flairconfig(bool flair_enabled, string flair_position, bool flair_self_assign_enabled,
             string link_flair_position, bool link_flair_self_assign_enabled, string subreddit = "")
         {
-            Dictionary<string, string> ret = REST.POST(@"http://www.reddit.com" + (subreddit != "" ? @"/r/" + subreddit : "") + @"/api/flairconfig",
-                @"flair_enabled=" + flair_enabled.ToString() + @"&flair_position=" + flair_position + @"&flair_self_assign_enabled=" + flair_self_assign_enabled.ToString()
-                + @"&link_flair_position=" + link_flair_position + @"&link_flair_self_assign_enabled=" + link_flair_self_assign_enabled.ToString() 
-                + @"&api_type=json", Account.cookies, Account.authheaders);
-
-            if (ret["StatusCode"] == "200")
-            {
-                return Account.CheckValidation(REST.ValidateReturnData(ret));
-            }
-            else
-            {
-                error = "ERROR in " + System.Reflection.MethodBase.GetCurrentMethod().Name + " : " + ret["StatusDescription"] + @" (" + ret["StatusCode"] + @")";
-
-                return false;
-            }
+            return (API.Retrieve((subreddit != "" ? @"/r/" + subreddit : "") + @"/api/flairconfig", "POST", System.Reflection.MethodBase.GetCurrentMethod().Name,
+                Account, new List<string> { "flair_enabled", "flair_position", "flair_self_assign_enabled", "link_flair_position", "link_flair_self_assign_enabled", "api_type" },
+                new object[] { flair_enabled.ToString(), flair_position, flair_self_assign_enabled.ToString(), link_flair_position, link_flair_self_assign_enabled.ToString(), "json" }) != "");
         }
 
         public bool flaircsv(string flair_csv, string subreddit = "")
         {
-            Dictionary<string, string> ret = REST.POST(@"http://www.reddit.com" + (subreddit != "" ? @"/r/" + subreddit : "") + @"/api/flaircsv",
-                @"flair_csv=" + flair_csv
-                + @"&api_type=json", Account.cookies, Account.authheaders);
-
-            if (ret["StatusCode"] == "200")
-            {
-                return Account.CheckValidation(REST.ValidateReturnData(ret));
-            }
-            else
-            {
-                error = "ERROR in " + System.Reflection.MethodBase.GetCurrentMethod().Name + " : " + ret["StatusDescription"] + @" (" + ret["StatusCode"] + @")";
-
-                return false;
-            }
+            return (API.Retrieve((subreddit != "" ? @"/r/" + subreddit : "") + @"/api/flaircsv", "POST", System.Reflection.MethodBase.GetCurrentMethod().Name,
+                Account, new List<string> { "flair_csv", "api_type" },
+                new object[] { flair_csv, "json" }) != "");
         }
 
         public Dictionary<string, string> flairlist(string after, string before, int count, int limit, string name, string show, string target, string subreddit = "")
         {
-            Dictionary<string, string> ret = REST.GET(@"http://www.reddit.com" + (subreddit != "" ? @"/r/" + subreddit : "") + @"/api/flairlist",
-                @"after=" + after + @"&before=" + before + @"&count=" + count.ToString() + @"&limit=" + limit.ToString() + @"&name=" + name 
-                + @"&show=" + show + @"&target=" + target 
-                + @"&api_type=json", Account.cookies, Account.authheaders);
-
-            if (ret["StatusCode"] == "200")
-            {
-                if (Account.CheckValidation(REST.ValidateReturnData(ret)) == true)
-                {
-                    return REST.json_decode(REST.json_prepare(ret["Body"]));
-                }
-                else
-                {
-                    return new Dictionary<string, string>();
-                }
-            }
-            else
-            {
-                error = "ERROR in " + System.Reflection.MethodBase.GetCurrentMethod().Name + " : " + ret["StatusDescription"] + @" (" + ret["StatusCode"] + @")";
-
-                return new Dictionary<string, string>();
-            }
+            return API.Retrieve_JSON((subreddit != "" ? @"/r/" + subreddit : "") + @"/api/flairlist", "GET", System.Reflection.MethodBase.GetCurrentMethod().Name,
+                Account, new List<string> { "after", "before", "count", "limit", "name", "show", "target", "api_type" },
+                new object[] { after, before, count.ToString(), limit.ToString(), name, show, target, "json" });
         }
 
         public bool flairtemplate(string css_class, string flair_template_id, string flair_type, string text, bool text_editable, string subreddit = "")
         {
-            Dictionary<string, string> ret = REST.POST(@"http://www.reddit.com" + (subreddit != "" ? @"/r/" + subreddit : "") + @"/api/flairtemplate",
-                @"css_class=" + css_class + @"&flair_template_id=" + flair_template_id + @"&flair_type=" + flair_type
-                + @"&text=" + text + @"&text_editable=" + text_editable.ToString()
-                + @"&api_type=json", Account.cookies, Account.authheaders);
-
-            if (ret["StatusCode"] == "200")
-            {
-                return Account.CheckValidation(REST.ValidateReturnData(ret));
-            }
-            else
-            {
-                error = "ERROR in " + System.Reflection.MethodBase.GetCurrentMethod().Name + " : " + ret["StatusDescription"] + @" (" + ret["StatusCode"] + @")";
-
-                return false;
-            }
+            return (API.Retrieve((subreddit != "" ? @"/r/" + subreddit : "") + @"/api/flairtemplate", "POST", System.Reflection.MethodBase.GetCurrentMethod().Name,
+                Account, new List<string> { "css_class", "flair_template_id", "flair_type", "text", "text_editable", "api_type" },
+                new object[] { css_class, flair_template_id, flair_type, text, text_editable.ToString(), "json" }) != "");
         }
 
         public bool selectflair(string flair_template_id, string link, string name, string text, string subreddit = "")
         {
-            Dictionary<string, string> ret = REST.POST(@"http://www.reddit.com" + (subreddit != "" ? @"/r/" + subreddit : "") + @"/api/selectflair",
-                @"flair_template_id=" + flair_template_id + @"&link=" + link + @"&name=" + name + @"&text=" + text 
-                + @"&api_type=json", Account.cookies, Account.authheaders);
-
-            if (ret["StatusCode"] == "200")
-            {
-                return Account.CheckValidation(REST.ValidateReturnData(ret));
-            }
-            else
-            {
-                error = "ERROR in " + System.Reflection.MethodBase.GetCurrentMethod().Name + " : " + ret["StatusDescription"] + @" (" + ret["StatusCode"] + @")";
-
-                return false;
-            }
+            return (API.Retrieve((subreddit != "" ? @"/r/" + subreddit : "") + @"/api/selectflair", "POST", System.Reflection.MethodBase.GetCurrentMethod().Name,
+                Account, new List<string> { "flair_template_id", "link", "name", "text", "api_type" },
+                new object[] { flair_template_id, link, name, text, "json" }) != "");
         }
 
         public bool setflairenabled(bool flair_enabled, string subreddit = "")
         {
-            Dictionary<string, string> ret = REST.POST(@"http://www.reddit.com" + (subreddit != "" ? @"/r/" + subreddit : "") + @"/api/setflairenabled",
-                @"flair_enabled=" + flair_enabled.ToString() 
-                + @"&api_type=json", Account.cookies, Account.authheaders);
-
-            if (ret["StatusCode"] == "200")
-            {
-                return Account.CheckValidation(REST.ValidateReturnData(ret));
-            }
-            else
-            {
-                error = "ERROR in " + System.Reflection.MethodBase.GetCurrentMethod().Name + " : " + ret["StatusDescription"] + @" (" + ret["StatusCode"] + @")";
-
-                return false;
-            }
+            return (API.Retrieve((subreddit != "" ? @"/r/" + subreddit : "") + @"/api/setflairenabled", "POST", System.Reflection.MethodBase.GetCurrentMethod().Name,
+                Account, new List<string> { "flair_enabled", "api_type" },
+                new object[] { flair_enabled.ToString(), "json" }) != "");
         }
     }
 }

@@ -20,101 +20,38 @@ namespace csReddit
 
         public bool block(string id)
         {
-            Dictionary<string, string> ret = REST.POST(@"http://www.reddit.com/api/block",
-                @"id=" + id
-                + @"&api_type=json", Account.cookies, Account.authheaders);
-
-            if (ret["StatusCode"] == "200")
-            {
-                return Account.CheckValidation(REST.ValidateReturnData(ret));
-            }
-            else
-            {
-                error = "ERROR in " + System.Reflection.MethodBase.GetCurrentMethod().Name + " : " + ret["StatusDescription"] + @" (" + ret["StatusCode"] + @")";
-
-                return false;
-            }
+            return (API.Retrieve(@"/api/block", "POST", System.Reflection.MethodBase.GetCurrentMethod().Name,
+                Account, new List<string> { "id", "api_type" },
+                new object[] { id, "json" }) != "");
         }
 
         public bool compose(string captcha, string iden, string subject, string text, string to)
         {
-            Dictionary<string, string> ret = REST.POST(@"http://www.reddit.com/api/compose",
-                @"captcha=" + captcha + @"&iden=" + iden + @"&subject=" + subject + @"&text=" + text + @"&to=" + to 
-                + @"&api_type=json", Account.cookies, Account.authheaders);
-
-            if (ret["StatusCode"] == "200")
-            {
-                return Account.CheckValidation(REST.ValidateReturnData(ret));
-            }
-            else
-            {
-                error = "ERROR in " + System.Reflection.MethodBase.GetCurrentMethod().Name + " : " + ret["StatusDescription"] + @" (" + ret["StatusCode"] + @")";
-
-                return false;
-            }
+            return (API.Retrieve(@"/api/compose", "POST", System.Reflection.MethodBase.GetCurrentMethod().Name,
+                Account, new List<string> { "captcha", "iden", "subject", "text", "to", "api_type" },
+                new object[] { captcha, iden, subject, text, to, "json" }) != "");
         }
 
         public bool read_message(string id)
         {
-            Dictionary<string, string> ret = REST.POST(@"http://www.reddit.com/api/read_message",
-                @"id=" + id
-                + @"&api_type=json", Account.cookies, Account.authheaders);
-
-            if (ret["StatusCode"] == "200")
-            {
-                return Account.CheckValidation(REST.ValidateReturnData(ret));
-            }
-            else
-            {
-                error = "ERROR in " + System.Reflection.MethodBase.GetCurrentMethod().Name + " : " + ret["StatusDescription"] + @" (" + ret["StatusCode"] + @")";
-
-                return false;
-            }
+            return (API.Retrieve(@"/api/read_message", "POST", System.Reflection.MethodBase.GetCurrentMethod().Name,
+                Account, new List<string> { "id", "api_type" },
+                new object[] { id, "json" }) != "");
         }
 
         public bool unread_message(string id)
         {
-            Dictionary<string, string> ret = REST.POST(@"http://www.reddit.com/api/unread_message",
-                @"id=" + id
-                + @"&api_type=json", Account.cookies, Account.authheaders);
-
-            if (ret["StatusCode"] == "200")
-            {
-                return Account.CheckValidation(REST.ValidateReturnData(ret));
-            }
-            else
-            {
-                error = "ERROR in " + System.Reflection.MethodBase.GetCurrentMethod().Name + " : " + ret["StatusDescription"] + @" (" + ret["StatusCode"] + @")";
-
-                return false;
-            }
+            return (API.Retrieve(@"/api/unread_message", "POST", System.Reflection.MethodBase.GetCurrentMethod().Name,
+                Account, new List<string> { "id", "api_type" },
+                new object[] { id, "json" }) != "");
         }
 
         public Dictionary<string, string> message(string where, bool mark, string mid, string after, string before, int count, 
             string show, string target, int limit = 25)
         {
-            Dictionary<string, string> ret = REST.GET(@"http://www.reddit.com/message/" + where + @".json",
-                @"mark=" + mark.ToString() + @"&mid=" + mid + @"&after=" + after + @"&before=" + before + @"&count=" + count.ToString() 
-                + @"&show=" + show  + @"&target=" + target + @"&limit=" + limit.ToString(),
-                Account.cookies, Account.authheaders);
-
-            if (ret["StatusCode"] == "200")
-            {
-                if (Account.CheckValidation(REST.ValidateReturnData(ret)) == true)
-                {
-                    return REST.json_decode(REST.json_prepare(ret["Body"]));
-                }
-                else
-                {
-                    return new Dictionary<string, string>();
-                }
-            }
-            else
-            {
-                error = "ERROR in " + System.Reflection.MethodBase.GetCurrentMethod().Name + " : " + ret["StatusDescription"] + @" (" + ret["StatusCode"] + @")";
-
-                return new Dictionary<string, string>();
-            }
+            return API.Retrieve_JSON(@"/api/message/" + where + @".json", "GET", System.Reflection.MethodBase.GetCurrentMethod().Name,
+                Account, new List<string> { "mark", "mid", "after", "before", "count", "show", "target", "limit" },
+                new object[] { mark.ToString(), mid, after, before, count.ToString(), show, target, limit.ToString() });
         }
     }
 }

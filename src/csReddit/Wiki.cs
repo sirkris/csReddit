@@ -18,106 +18,30 @@ namespace csReddit
 
         public Dictionary<string, string> alloweditor(string act, string page, string username, string subreddit = "")
         {
-            Dictionary<string, string> ret = REST.POST(@"http://www.reddit.com" + (subreddit != "" ? @"/r/" + subreddit : "")
-                + @"/api/wiki/alloweditor/" + act,
-                @"page=" + page + @"&username=" + username,
-                Account.cookies, Account.authheaders);
-
-            if (ret["StatusCode"] == "200")
-            {
-                if (Account.CheckValidation(REST.ValidateReturnData(ret)) == true)
-                {
-                    return REST.json_decode(REST.json_prepare(ret["Body"]));
-                }
-                else
-                {
-                    return new Dictionary<string, string>();
-                }
-            }
-            else
-            {
-                error = "ERROR in " + System.Reflection.MethodBase.GetCurrentMethod().Name + " : " + ret["StatusDescription"] + @" (" + ret["StatusCode"] + @")";
-
-                return new Dictionary<string, string>();
-            }
+            return API.Retrieve_JSON((subreddit != "" ? @"/r/" + subreddit : "") + @"/api/wiki/alloweditor/" + act, "POST", System.Reflection.MethodBase.GetCurrentMethod().Name,
+                Account, new List<string> { "page", "username" },
+                new object[] { page, username });
         }
 
         public Dictionary<string, string> edit(string content, string page, string previous, string reason, string subreddit = "")
         {
-            Dictionary<string, string> ret = REST.POST(@"http://www.reddit.com" + (subreddit != "" ? @"/r/" + subreddit : "")
-                + @"/api/wiki/edit",
-                @"content=" + content + @"&page=" + page + @"&previous=" + previous + @"&reason=" + reason,
-                Account.cookies, Account.authheaders);
-
-            if (ret["StatusCode"] == "200")
-            {
-                if (Account.CheckValidation(REST.ValidateReturnData(ret)) == true)
-                {
-                    return REST.json_decode(REST.json_prepare(ret["Body"]));
-                }
-                else
-                {
-                    return new Dictionary<string, string>();
-                }
-            }
-            else
-            {
-                error = "ERROR in " + System.Reflection.MethodBase.GetCurrentMethod().Name + " : " + ret["StatusDescription"] + @" (" + ret["StatusCode"] + @")";
-
-                return new Dictionary<string, string>();
-            }
+            return API.Retrieve_JSON((subreddit != "" ? @"/r/" + subreddit : "") + @"/api/wiki/edit", "POST", System.Reflection.MethodBase.GetCurrentMethod().Name,
+                Account, new List<string> { "content", "page", "previous", "reason" },
+                new object[] { content, page, previous, reason });
         }
 
         public Dictionary<string, string> hide(string page, string revision, string subreddit = "")
         {
-            Dictionary<string, string> ret = REST.POST(@"http://www.reddit.com" + (subreddit != "" ? @"/r/" + subreddit : "")
-                + @"/api/wiki/hide",
-                @"page=" + page + @"&revision=" + revision,
-                Account.cookies, Account.authheaders);
-
-            if (ret["StatusCode"] == "200")
-            {
-                if (Account.CheckValidation(REST.ValidateReturnData(ret)) == true)
-                {
-                    return REST.json_decode(REST.json_prepare(ret["Body"]));
-                }
-                else
-                {
-                    return new Dictionary<string, string>();
-                }
-            }
-            else
-            {
-                error = "ERROR in " + System.Reflection.MethodBase.GetCurrentMethod().Name + " : " + ret["StatusDescription"] + @" (" + ret["StatusCode"] + @")";
-
-                return new Dictionary<string, string>();
-            }
+            return API.Retrieve_JSON((subreddit != "" ? @"/r/" + subreddit : "") + @"/api/wiki/hide", "POST", System.Reflection.MethodBase.GetCurrentMethod().Name,
+                Account, new List<string> { "page", "revision" },
+                new object[] { page, revision });
         }
 
         public Dictionary<string, string> revert(string page, string revision, string subreddit = "")
         {
-            Dictionary<string, string> ret = REST.POST(@"http://www.reddit.com" + (subreddit != "" ? @"/r/" + subreddit : "")
-                + @"/api/wiki/revert",
-                @"page=" + page + @"&revision=" + revision,
-                Account.cookies, Account.authheaders);
-
-            if (ret["StatusCode"] == "200")
-            {
-                if (Account.CheckValidation(REST.ValidateReturnData(ret)) == true)
-                {
-                    return REST.json_decode(REST.json_prepare(ret["Body"]));
-                }
-                else
-                {
-                    return new Dictionary<string, string>();
-                }
-            }
-            else
-            {
-                error = "ERROR in " + System.Reflection.MethodBase.GetCurrentMethod().Name + " : " + ret["StatusDescription"] + @" (" + ret["StatusCode"] + @")";
-                
-                return new Dictionary<string, string>();
-            }
+            return API.Retrieve_JSON((subreddit != "" ? @"/r/" + subreddit : "") + @"/api/wiki/revert", "POST", System.Reflection.MethodBase.GetCurrentMethod().Name,
+                Account, new List<string> { "page", "revision" },
+                new object[] { page, revision });
         }
 
         public Wiki() : this(null) { }

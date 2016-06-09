@@ -18,302 +18,86 @@ namespace csReddit
 
         public Dictionary<string, string> mine()
         {
-            Dictionary<string, string> ret = REST.GET(@"http://www.reddit.com/api/multi/mine", 
-                @"",
-                Account.cookies, Account.authheaders);
-
-            if (ret["StatusCode"] == "200")
-            {
-                if (Account.CheckValidation(REST.ValidateReturnData(ret)) == true)
-                {
-                    return REST.json_decode(REST.json_prepare(ret["Body"]));
-                }
-                else
-                {
-                    return new Dictionary<string, string>();
-                }
-            }
-            else
-            {
-                error = "ERROR in " + System.Reflection.MethodBase.GetCurrentMethod().Name + " : " + ret["StatusDescription"] + @" (" + ret["StatusCode"] + @")";
-
-                return new Dictionary<string, string>();
-            }
+            return API.Retrieve_JSON(@"/api/multi/mine", "GET", System.Reflection.MethodBase.GetCurrentMethod().Name,
+                Account, new List<string> { },
+                new object[] { });
         }
 
         public Dictionary<string, string> delete_multipath(string multipath)
         {
-            Dictionary<string, string> ret = REST.DELETE(@"http://www.reddit.com/api/multi/" + multipath,
-                @"",
-                Account.cookies, Account.authheaders);
-
-            if (ret["StatusCode"] == "200")
-            {
-                if (Account.CheckValidation(REST.ValidateReturnData(ret)) == true)
-                {
-                    return REST.json_decode(REST.json_prepare(ret["Body"]));
-                }
-                else
-                {
-                    return new Dictionary<string, string>();
-                }
-            }
-            else
-            {
-                error = "ERROR in " + System.Reflection.MethodBase.GetCurrentMethod().Name + " : " + ret["StatusDescription"] + @" (" + ret["StatusCode"] + @")";
-
-                return new Dictionary<string, string>();
-            }
+            return API.Retrieve_JSON(@"/api/multi/" + multipath, "DELETE", System.Reflection.MethodBase.GetCurrentMethod().Name,
+                Account, new List<string> { },
+                new object[] { });
         }
 
         public Dictionary<string, string> get_multipath(string multipath)
         {
-            Dictionary<string, string> ret = REST.GET(@"http://www.reddit.com/api/multi/" + multipath,
-                @"",
-                Account.cookies, Account.authheaders);
-
-            if (ret["StatusCode"] == "200")
-            {
-                if (Account.CheckValidation(REST.ValidateReturnData(ret)) == true)
-                {
-                    return REST.json_decode(REST.json_prepare(ret["Body"]));
-                }
-                else
-                {
-                    return new Dictionary<string, string>();
-                }
-            }
-            else
-            {
-                error = "ERROR in " + System.Reflection.MethodBase.GetCurrentMethod().Name + " : " + ret["StatusDescription"] + @" (" + ret["StatusCode"] + @")";
-
-                return new Dictionary<string, string>();
-            }
+            return API.Retrieve_JSON(@"/api/multi/" + multipath, "GET", System.Reflection.MethodBase.GetCurrentMethod().Name,
+                Account, new List<string> { },
+                new object[] { });
         }
 
         public Dictionary<string, string> create_multipath(string multipath, string model)
         {
-            Dictionary<string, string> ret = REST.POST(@"http://www.reddit.com/api/multi/" + multipath,
-                @"model=" + model,
-                Account.cookies, Account.authheaders);
-
-            if (ret["StatusCode"] == "200")
-            {
-                if (Account.CheckValidation(REST.ValidateReturnData(ret)) == true)
-                {
-                    return REST.json_decode(REST.json_prepare(ret["Body"]));
-                }
-                else
-                {
-                    return new Dictionary<string, string>();
-                }
-            }
-            else
-            {
-                error = "ERROR in " + System.Reflection.MethodBase.GetCurrentMethod().Name + " : " + ret["StatusDescription"] + @" (" + ret["StatusCode"] + @")";
-
-                return new Dictionary<string, string>();
-            }
+            return API.Retrieve_JSON(@"/api/multi/" + multipath, "POST", System.Reflection.MethodBase.GetCurrentMethod().Name,
+                Account, new List<string> { "model" },
+                new object[] { model });
         }
 
         public Dictionary<string, string> update_multipath(string multipath, string model)
         {
-            Dictionary<string, string> ret = REST.PUT(@"http://www.reddit.com/api/multi/" + multipath,
-                @"model=" + model,
-                Account.cookies, Account.authheaders);
-
-            if (ret["StatusCode"] == "200")
-            {
-                if (Account.CheckValidation(REST.ValidateReturnData(ret)) == true)
-                {
-                    return REST.json_decode(REST.json_prepare(ret["Body"]));
-                }
-                else
-                {
-                    return new Dictionary<string, string>();
-                }
-            }
-            else
-            {
-                error = "ERROR in " + System.Reflection.MethodBase.GetCurrentMethod().Name + " : " + ret["StatusDescription"] + @" (" + ret["StatusCode"] + @")";
-
-                return new Dictionary<string, string>();
-            }
+            return API.Retrieve_JSON(@"/api/multi/" + multipath, "PUT", System.Reflection.MethodBase.GetCurrentMethod().Name,
+                Account, new List<string> { "model" },
+                new object[] { model });
         }
 
         public Dictionary<string, string> copy_multipath(string multipath, string from, string to)
         {
-            Dictionary<string, string> ret = REST.POST(@"http://www.reddit.com/api/multi/" + multipath + @"/copy",
-                @"from=" + from + @"&to=" + to,
-                Account.cookies, Account.authheaders);
-
-            if (ret["StatusCode"] == "200")
-            {
-                if (Account.CheckValidation(REST.ValidateReturnData(ret)) == true)
-                {
-                    return REST.json_decode(REST.json_prepare(ret["Body"]));
-                }
-                else
-                {
-                    return new Dictionary<string, string>();
-                }
-            }
-            else
-            {
-                error = "ERROR in " + System.Reflection.MethodBase.GetCurrentMethod().Name + " : " + ret["StatusDescription"] + @" (" + ret["StatusCode"] + @")";
-
-                return new Dictionary<string, string>();
-            }
+            return API.Retrieve_JSON(@"/api/multi/" + multipath + @"/copy", "POST", System.Reflection.MethodBase.GetCurrentMethod().Name,
+                Account, new List<string> { "from", "to" },
+                new object[] { from, to });
         }
 
         public Dictionary<string, string> get_description(string multipath)
         {
-            Dictionary<string, string> ret = REST.GET(@"http://www.reddit.com/api/multi/" + multipath + @"/description",
-                @"",
-                Account.cookies, Account.authheaders);
-
-            if (ret["StatusCode"] == "200")
-            {
-                if (Account.CheckValidation(REST.ValidateReturnData(ret)) == true)
-                {
-                    return REST.json_decode(REST.json_prepare(ret["Body"]));
-                }
-                else
-                {
-                    return new Dictionary<string, string>();
-                }
-            }
-            else
-            {
-                error = "ERROR in " + System.Reflection.MethodBase.GetCurrentMethod().Name + " : " + ret["StatusDescription"] + @" (" + ret["StatusCode"] + @")";
-
-                return new Dictionary<string, string>();
-            }
+            return API.Retrieve_JSON(@"/api/multi/" + multipath + @"/description", "GET", System.Reflection.MethodBase.GetCurrentMethod().Name,
+                Account, new List<string> { },
+                new object[] { });
         }
 
         public Dictionary<string, string> change_description(string multipath, string model)
         {
-            Dictionary<string, string> ret = REST.PUT(@"http://www.reddit.com/api/multi/" + multipath + @"/description",
-                @"model=" + model,
-                Account.cookies, Account.authheaders);
-
-            if (ret["StatusCode"] == "200")
-            {
-                if (Account.CheckValidation(REST.ValidateReturnData(ret)) == true)
-                {
-                    return REST.json_decode(REST.json_prepare(ret["Body"]));
-                }
-                else
-                {
-                    return new Dictionary<string, string>();
-                }
-            }
-            else
-            {
-                error = "ERROR in " + System.Reflection.MethodBase.GetCurrentMethod().Name + " : " + ret["StatusDescription"] + @" (" + ret["StatusCode"] + @")";
-
-                return new Dictionary<string, string>();
-            }
+            return API.Retrieve_JSON(@"/api/multi/" + multipath + @"/description", "PUT", System.Reflection.MethodBase.GetCurrentMethod().Name,
+                Account, new List<string> { "model" },
+                new object[] { model });
         }
 
         public Dictionary<string, string> delete_sub(string multipath, string srname)
         {
-            Dictionary<string, string> ret = REST.DELETE(@"http://www.reddit.com/api/multi/" + multipath + @"/r/" + srname,
-                @"",
-                Account.cookies, Account.authheaders);
-
-            if (ret["StatusCode"] == "200")
-            {
-                if (Account.CheckValidation(REST.ValidateReturnData(ret)) == true)
-                {
-                    return REST.json_decode(REST.json_prepare(ret["Body"]));
-                }
-                else
-                {
-                    return new Dictionary<string, string>();
-                }
-            }
-            else
-            {
-                error = "ERROR in " + System.Reflection.MethodBase.GetCurrentMethod().Name + " : " + ret["StatusDescription"] + @" (" + ret["StatusCode"] + @")";
-
-                return new Dictionary<string, string>();
-            }
+            return API.Retrieve_JSON(@"/api/multi/" + multipath + @"/r/" + srname, "DELETE", System.Reflection.MethodBase.GetCurrentMethod().Name,
+                Account, new List<string> { },
+                new object[] { });
         }
 
         public Dictionary<string, string> get_sub(string multipath, string srname)
         {
-            Dictionary<string, string> ret = REST.GET(@"http://www.reddit.com/api/multi/" + multipath + @"/r/" + srname,
-                @"",
-                Account.cookies, Account.authheaders);
-
-            if (ret["StatusCode"] == "200")
-            {
-                if (Account.CheckValidation(REST.ValidateReturnData(ret)) == true)
-                {
-                    return REST.json_decode(REST.json_prepare(ret["Body"]));
-                }
-                else
-                {
-                    return new Dictionary<string, string>();
-                }
-            }
-            else
-            {
-                error = "ERROR in " + System.Reflection.MethodBase.GetCurrentMethod().Name + " : " + ret["StatusDescription"] + @" (" + ret["StatusCode"] + @")";
-
-                return new Dictionary<string, string>();
-            }
+            return API.Retrieve_JSON(@"/api/multi/" + multipath + @"/r/" + srname, "GET", System.Reflection.MethodBase.GetCurrentMethod().Name,
+                Account, new List<string> { },
+                new object[] { });
         }
 
         public Dictionary<string, string> add_sub(string multipath, string srname, string model)
         {
-            Dictionary<string, string> ret = REST.PUT(@"http://www.reddit.com/api/multi/" + multipath + @"/r/" + srname,
-                @"model=" + model,
-                Account.cookies, Account.authheaders);
-
-            if (ret["StatusCode"] == "200")
-            {
-                if (Account.CheckValidation(REST.ValidateReturnData(ret)) == true)
-                {
-                    return REST.json_decode(REST.json_prepare(ret["Body"]));
-                }
-                else
-                {
-                    return new Dictionary<string, string>();
-                }
-            }
-            else
-            {
-                error = "ERROR in " + System.Reflection.MethodBase.GetCurrentMethod().Name + " : " + ret["StatusDescription"] + @" (" + ret["StatusCode"] + @")";
-
-                return new Dictionary<string, string>();
-            }
+            return API.Retrieve_JSON(@"/api/multi/" + multipath + @"/r/" + srname, "PUT", System.Reflection.MethodBase.GetCurrentMethod().Name,
+                Account, new List<string> { "model" },
+                new object[] { model });
         }
 
         public Dictionary<string, string> rename_multi(string multipath, string from, string to)
         {
-            Dictionary<string, string> ret = REST.POST(@"http://www.reddit.com/api/multi/" + multipath + @"/rename",
-                @"from=" + from + @"&to=" + to,
-                Account.cookies, Account.authheaders);
-
-            if (ret["StatusCode"] == "200")
-            {
-                if (Account.CheckValidation(REST.ValidateReturnData(ret)) == true)
-                {
-                    return REST.json_decode(REST.json_prepare(ret["Body"]));
-                }
-                else
-                {
-                    return new Dictionary<string, string>();
-                }
-            }
-            else
-            {
-                error = "ERROR in " + System.Reflection.MethodBase.GetCurrentMethod().Name + " : " + ret["StatusDescription"] + @" (" + ret["StatusCode"] + @")";
-
-                return new Dictionary<string, string>();
-            }
+            return API.Retrieve_JSON(@"/api/multi/" + multipath + @"/rename", "POST", System.Reflection.MethodBase.GetCurrentMethod().Name,
+                Account, new List<string> { "from", "to" },
+                new object[] { from, to });
         }
 
         public Multis() : this(null) { }
