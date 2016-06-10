@@ -110,7 +110,7 @@ namespace csReddit
             }
         }
 
-        public static Dictionary<string, string> Retrieve_JSON(string path, string rest_method, string caller_method, Account Account, 
+        public static dynamic Retrieve_JSON(string path, string rest_method, string caller_method, Account Account, 
             List<string> vars, params object[] vals)
         {
             string body = Retrieve(path, rest_method, caller_method, Account, vars, vals);

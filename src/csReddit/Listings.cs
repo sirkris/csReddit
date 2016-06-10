@@ -18,14 +18,14 @@ namespace csReddit
 
         public Listings() : this(null) { }
 
-        public Dictionary<string, string> comments(string article, string comment, string context, int depth, int limit, string sort, string subreddit = "")
+        public dynamic comments(string article, string comment, string context, int depth, int limit, string sort, string subreddit = "")
         {
             return API.Retrieve_JSON((subreddit != "" ? @"/r/" + subreddit : "") + @"/comments/" + article + @".json", "GET", System.Reflection.MethodBase.GetCurrentMethod().Name,
                 Account, new List<string> { "comment", "context", "depth", "limit", "sort", "api_type" },
                 new object[] { comment, context, depth.ToString(), limit.ToString(), sort, "json" });
         }
 
-        public Dictionary<string, string> hot(string after, string before, int count, int limit, string show, string target, string subreddit = "")
+        public dynamic hot(string after, string before, int count, int limit, string show, string target, string subreddit = "")
         {
             return API.Retrieve_JSON((subreddit != "" ? @"/r/" + subreddit : "") + @"/hot.json", "GET", System.Reflection.MethodBase.GetCurrentMethod().Name,
                 Account, new List<string> { "after", "before", "count", "limit", "show", "target", "api_type" },
@@ -33,7 +33,7 @@ namespace csReddit
         }
 
         // Sorry, but "new" is a reserved keyword in C#.  --Kris
-        public Dictionary<string, string> new_list(string after, string before, int count, int limit, string show, string target, string subreddit = "")
+        public dynamic new_list(string after, string before, int count, int limit, string show, string target, string subreddit = "")
         {
             return API.Retrieve_JSON((subreddit != "" ? @"/r/" + subreddit : "") + @"/new.json", "GET", System.Reflection.MethodBase.GetCurrentMethod().Name,
                 Account, new List<string> { "after", "before", "count", "limit", "show", "target", "api_type" },
@@ -66,14 +66,14 @@ namespace csReddit
             }
         }
 
-        public Dictionary<string, string> top(string t, string after, string before, int count, int limit, string show, string target, string subreddit = "")
+        public dynamic top(string t, string after, string before, int count, int limit, string show, string target, string subreddit = "")
         {
             return API.Retrieve_JSON((subreddit != "" ? @"/r/" + subreddit : "") + @"/top.json", "GET", System.Reflection.MethodBase.GetCurrentMethod().Name,
                 Account, new List<string> { "t", "after", "before", "count", "limit", "show", "target", "api_type" },
                 new object[] { t, after, before, count.ToString(), limit.ToString(), show, target, "json" });
         }
 
-        public Dictionary<string, string> controversial(string t, string after, string before, int count, int limit, string show, string target, string subreddit = "")
+        public dynamic controversial(string t, string after, string before, int count, int limit, string show, string target, string subreddit = "")
         {
             return API.Retrieve_JSON((subreddit != "" ? @"/r/" + subreddit : "") + @"/controversial.json", "GET", System.Reflection.MethodBase.GetCurrentMethod().Name,
                 Account, new List<string> { "t", "after", "before", "count", "limit", "show", "target", "api_type" },
