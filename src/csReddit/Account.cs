@@ -81,7 +81,7 @@ namespace csReddit
                 authheaders = new Dictionary<string, string>();
                 authheaders.Add("X-Modhash", modhash);
 
-                Dictionary<string, string> data = me();
+                dynamic data = me();
 
                 has_mail = Convert.ToBoolean(data["has_mail"]);
                 name = data["name"];
@@ -156,7 +156,7 @@ namespace csReddit
             }
         }
 
-        public Dictionary<string, string> me()
+        public dynamic me()
         {
             Dictionary<string, string> ret = REST.GET(@"http://www.reddit.com/api/me.json", "", cookies, authheaders);
 

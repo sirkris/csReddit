@@ -392,12 +392,12 @@ namespace csReddit
             return ProcessQueryResponse(Query("DELETE", URL, Params, cookies, headers, files), out cookiecollection);
         }
 
-        public static Dictionary<string, string> json_decode(string json)
+        public static dynamic json_decode(string json)
         {
-            return JsonConvert.DeserializeObject<Dictionary<string, string>>(json);
+            return JsonConvert.DeserializeObject(json);
         }
 
-        public static string json_encode(Dictionary<string, string> data)
+        public static string json_encode(dynamic data)
         {
             return JsonConvert.SerializeObject(data);
         }
@@ -406,7 +406,8 @@ namespace csReddit
         public static string json_prepare(string json)
         {
             // Basically just grabs the inner-most (last) {} section of the JSON since recursive parsing isn't natively supported.  TODO?  --Kris
-            return json.Substring(json.LastIndexOf(@"{"), json.Substring(json.LastIndexOf(@"{")).Length - 1);
+            //return json.Substring(json.LastIndexOf(@"{"), json.Substring(json.LastIndexOf(@"{")).Length - 1);
+            return json;
         }
 
         public static bool is_json(string body)
