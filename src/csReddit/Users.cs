@@ -11,9 +11,12 @@ namespace csReddit
         public string warning;
 
         private Account Account;
+        private API API;
+
         public Users(Account Account)
         {
             this.Account = Account;
+            this.API = new API();
         }
 
         public dynamic friend(string container, string name, string note, string permissions, string type)

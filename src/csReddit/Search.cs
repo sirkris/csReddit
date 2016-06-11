@@ -11,10 +11,12 @@ namespace csReddit
         public string warning;
 
         private Account Account;
+        private API API;
 
         public Search(Account Account)
         {
             this.Account = Account;
+            this.API = new API();
         }
 
         public dynamic search(string after, string before, string q, bool restrict_sr, string sort, 

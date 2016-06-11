@@ -11,9 +11,12 @@ namespace csReddit
         public string warning;
 
         private Account Account;
+        private API API;
+        
         public LinksAndComments(Account Account)
         {
             this.Account = Account;
+            this.API = new API();
         }
 
         public LinksAndComments() : this(null) { }
@@ -95,12 +98,20 @@ namespace csReddit
                 new object[] { id, state.ToString(), "json" }) != "");
         }
 
-        public dynamic submit(string captcha, string extension, string iden, string kind, bool resubmit, bool save, 
-            bool sendreplies, string sr, string text, string then, string title)
+        // A helpful discussion regarding the captcha requirement:  https://www.reddit.com/r/redditdev/comments/1w6117/how_do_people_making_bots_get_past_the_captcha/
+        // Pass the URL via the text argument for link posts.  --Kris
+        public dynamic submit(string captcha, string extension, string iden, string kind, bool resubmit, 
+            bool sendreplies, string sr, string text, string title)
         {
+            string label = "text";
+            if (kind.ToLower().Equals("link"))
+            {
+                label = "url";
+            }
+
             return API.Retrieve_JSON(@"/api/submit", "POST", System.Reflection.MethodBase.GetCurrentMethod().Name,
-                Account, new List<string> { "captcha", "extension", "iden", "kind", "resubmit", "save", "sendreplies", "sr", "text", "then", "title", "api_type" },
-                new object[] { captcha, extension, iden, kind, resubmit.ToString(), save.ToString(), sendreplies.ToString(), sr, text, then, title, "json" });
+                Account, new List<string> { "captcha", "extension", "iden", "kind", "resubmit", "sendreplies", "sr", label, "title", "api_type" },
+                new object[] { captcha, extension, iden, kind, resubmit.ToString(), sendreplies.ToString(), sr, text, title, "json" });
         }
 
         public bool unhide(string id)

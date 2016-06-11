@@ -11,9 +11,12 @@ namespace csReddit
         public string warning;
 
         private Account Account;
+        private API API;
+
         public Wiki(Account Account)
         {
             this.Account = Account;
+            this.API = new API();
         }
 
         public dynamic alloweditor(string act, string page, string username, string subreddit = "")

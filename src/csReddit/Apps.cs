@@ -11,9 +11,12 @@ namespace csReddit
         public string warning;
 
         private Account Account;
+        private API API;
+
         public Apps(Account Account)
         {
             this.Account = Account;
+            this.API = new API();
         }
 
         public Apps() : this(null) { }
