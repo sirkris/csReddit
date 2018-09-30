@@ -15,6 +15,7 @@ namespace csReddit
         public static string Repo = "https://github.com/sirkris/csReddit";
 
         /* Singleton instances of the various API classes.  --Kris */
+        public API API;
         public Account Account;
         public Apps Apps;
         public Captcha Captcha;
@@ -72,6 +73,8 @@ namespace csReddit
 
         internal void InitSingletons()
         {
+            API = new API();
+
             Account = new Account();
             Apps = new Apps(Account);
             Captcha = new Captcha(Account);

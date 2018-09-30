@@ -11,9 +11,12 @@ namespace csReddit
         public string warning;
 
         private Account Account;
+        private API API;
+
         public Flair(Account Account)
         {
             this.Account = Account;
+            this.API = new API();
         }
 
         public Flair() : this(null) { }
@@ -61,7 +64,7 @@ namespace csReddit
                 new object[] { flair_csv, "json" }) != "");
         }
 
-        public Dictionary<string, string> flairlist(string after, string before, int count, int limit, string name, string show, string target, string subreddit = "")
+        public dynamic flairlist(string after, string before, int count, int limit, string name, string show, string target, string subreddit = "")
         {
             return API.Retrieve_JSON((subreddit != "" ? @"/r/" + subreddit : "") + @"/api/flairlist", "GET", System.Reflection.MethodBase.GetCurrentMethod().Name,
                 Account, new List<string> { "after", "before", "count", "limit", "name", "show", "target", "api_type" },

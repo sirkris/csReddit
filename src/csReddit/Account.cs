@@ -36,6 +36,8 @@ namespace csReddit
 
         Dictionary<string, string> validate;
 
+        public dynamic profileData;
+
         public Account(bool login = false, string username = "", string password = "")
         {
             error = "";
@@ -81,21 +83,21 @@ namespace csReddit
                 authheaders = new Dictionary<string, string>();
                 authheaders.Add("X-Modhash", modhash);
 
-                Dictionary<string, string> data = me();
+                profileData = me();
 
-                has_mail = Convert.ToBoolean(data["has_mail"]);
-                name = data["name"];
-                created = Convert.ToInt32(data["created"]);
-                modhash = data["modhash"];
-                created_utc = Convert.ToInt32(data["created_utc"]);
-                link_karma = Convert.ToInt32(data["link_karma"]);
-                comment_karma = Convert.ToInt32(data["comment_karma"]);
-                over_18 = Convert.ToBoolean(data["over_18"]);
-                is_gold = Convert.ToBoolean(data["is_gold"]);
-                is_mod = Convert.ToBoolean(data["is_mod"]);
-                has_verified_email = Convert.ToBoolean(data["has_verified_email"]);
-                id = data["id"];
-                has_mod_mail = Convert.ToBoolean(data["has_mod_mail"]);
+                has_mail = Convert.ToBoolean(profileData["has_mail"]);
+                name = profileData["name"];
+                created = Convert.ToInt32(profileData["created"]);
+                modhash = profileData["modhash"];
+                created_utc = Convert.ToInt32(profileData["created_utc"]);
+                link_karma = Convert.ToInt32(profileData["link_karma"]);
+                comment_karma = Convert.ToInt32(profileData["comment_karma"]);
+                over_18 = Convert.ToBoolean(profileData["over_18"]);
+                is_gold = Convert.ToBoolean(profileData["is_gold"]);
+                is_mod = Convert.ToBoolean(profileData["is_mod"]);
+                has_verified_email = Convert.ToBoolean(profileData["has_verified_email"]);
+                id = profileData["id"];
+                has_mod_mail = Convert.ToBoolean(profileData["has_mod_mail"]);
 
                 error = "";
 
@@ -156,7 +158,7 @@ namespace csReddit
             }
         }
 
-        public Dictionary<string, string> me()
+        public dynamic me()
         {
             Dictionary<string, string> ret = REST.GET(@"http://www.reddit.com/api/me.json", "", cookies, authheaders);
 

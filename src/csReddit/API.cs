@@ -6,17 +6,26 @@ using System.Reflection;
 
 namespace csReddit
 {
-    public static class API
+    public class API
     {
-        public static string baseurl = @"http://www.reddit.com";
-        public static string last_error = "";
+        public string baseurl = @"http://www.reddit.com";
+        public string last_error = null;
+        public string last_status = null;
 
-        private static string combine_vars(List<string> vars, params object[] vals)
+        public API() { }
+
+        private string combine_vars(List<string> vars, params object[] vals)
         {
             string restvars = "";
             int i = 0;
             foreach (string var in vars)
             {
+                if (vals[i] == null)
+                {
+                    i++;
+                    continue;
+                }
+
                 restvars += (restvars != "" ? @"&" : "") + var + @"=";
                 switch (vals[i].GetType().ToString())
                 {
@@ -34,12 +43,14 @@ namespace csReddit
                         restvars += Convert.ToString(vals[i]);
                         break;
                 }
+
+                i++;
             }
 
             return restvars;
         }
 
-        public static string Retrieve(string path, string rest_method, string caller_method, Account Account,
+        public string Retrieve(string path, string rest_method, string caller_method, Account Account,
             List<string> vars, params object[] vals)
         {
             Dictionary<string, string> ret = new Dictionary<string, string>();
@@ -61,7 +72,7 @@ namespace csReddit
             return Parse_Status(ret, Account, caller_method);
         }
 
-        public static string Retrieve(string path, string rest_method, string caller_method, Account Account,
+        public string Retrieve(string path, string rest_method, string caller_method, Account Account,
             List<string> vars, Dictionary<string, string> files, params object[] vals)
         {
             Dictionary<string, string> ret = new Dictionary<string, string>();
@@ -83,7 +94,7 @@ namespace csReddit
             return Parse_Status(ret, Account, caller_method);
         }
 
-        public static string Parse_Status(Dictionary<string, string> ret, Account Account, string caller_method)
+        public string Parse_Status(Dictionary<string, string> ret, Account Account, string caller_method)
         {
             if (ret.ContainsKey("StatusCode") == false)
             {
@@ -91,7 +102,10 @@ namespace csReddit
 
                 return "";
             }
-            else if (ret["StatusCode"] == "200")
+
+            last_status = ret["StatusCode"];
+            
+            if (ret["StatusCode"] == "200")
             {
                 if (Account.CheckValidation(REST.ValidateReturnData(ret)) == true)
                 {
@@ -110,7 +124,7 @@ namespace csReddit
             }
         }
 
-        public static Dictionary<string, string> Retrieve_JSON(string path, string rest_method, string caller_method, Account Account, 
+        public dynamic Retrieve_JSON(string path, string rest_method, string caller_method, Account Account, 
             List<string> vars, params object[] vals)
         {
             string body = Retrieve(path, rest_method, caller_method, Account, vars, vals);
@@ -128,7 +142,7 @@ namespace csReddit
             }
         }
 
-        public static bool to_bool(string str)
+        public bool to_bool(string str)
         {
             bool res;
 

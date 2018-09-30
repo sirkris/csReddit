@@ -11,9 +11,12 @@ namespace csReddit
         public string warning;
 
         private Account Account;
+        private API API;
+
         public PrivateMessages(Account Account)
         {
             this.Account = Account;
+            this.API = new API();
         }
 
         public PrivateMessages() : this(null) { }
@@ -46,7 +49,7 @@ namespace csReddit
                 new object[] { id, "json" }) != "");
         }
 
-        public Dictionary<string, string> message(string where, bool mark, string mid, string after, string before, int count, 
+        public dynamic message(string where, bool mark, string mid, string after, string before, int count, 
             string show, string target, int limit = 25)
         {
             return API.Retrieve_JSON(@"/api/message/" + where + @".json", "GET", System.Reflection.MethodBase.GetCurrentMethod().Name,

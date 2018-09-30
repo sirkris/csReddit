@@ -1,7 +1,11 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.21005.1
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "csReddit", "csReddit\csReddit.csproj", "{DE1A3561-78ED-4C8A-A8C3-66741A8FD226}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "csRedditTests", "csRedditTests\csRedditTests.csproj", "{03684156-0B8A-49BF-BE86-6B2BDF96F3E2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -13,6 +17,10 @@ Global
 		{DE1A3561-78ED-4C8A-A8C3-66741A8FD226}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DE1A3561-78ED-4C8A-A8C3-66741A8FD226}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DE1A3561-78ED-4C8A-A8C3-66741A8FD226}.Release|Any CPU.Build.0 = Release|Any CPU
+		{03684156-0B8A-49BF-BE86-6B2BDF96F3E2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{03684156-0B8A-49BF-BE86-6B2BDF96F3E2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{03684156-0B8A-49BF-BE86-6B2BDF96F3E2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{03684156-0B8A-49BF-BE86-6B2BDF96F3E2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

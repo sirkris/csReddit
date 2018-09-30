@@ -11,89 +11,92 @@ namespace csReddit
         public string warning;
 
         private Account Account;
+        private API API;
+
         public Multis(Account Account)
         {
             this.Account = Account;
+            this.API = new API();
         }
 
-        public Dictionary<string, string> mine()
+        public dynamic mine()
         {
             return API.Retrieve_JSON(@"/api/multi/mine", "GET", System.Reflection.MethodBase.GetCurrentMethod().Name,
                 Account, new List<string> { },
                 new object[] { });
         }
 
-        public Dictionary<string, string> delete_multipath(string multipath)
+        public dynamic delete_multipath(string multipath)
         {
             return API.Retrieve_JSON(@"/api/multi/" + multipath, "DELETE", System.Reflection.MethodBase.GetCurrentMethod().Name,
                 Account, new List<string> { },
                 new object[] { });
         }
 
-        public Dictionary<string, string> get_multipath(string multipath)
+        public dynamic get_multipath(string multipath)
         {
             return API.Retrieve_JSON(@"/api/multi/" + multipath, "GET", System.Reflection.MethodBase.GetCurrentMethod().Name,
                 Account, new List<string> { },
                 new object[] { });
         }
 
-        public Dictionary<string, string> create_multipath(string multipath, string model)
+        public dynamic create_multipath(string multipath, string model)
         {
             return API.Retrieve_JSON(@"/api/multi/" + multipath, "POST", System.Reflection.MethodBase.GetCurrentMethod().Name,
                 Account, new List<string> { "model" },
                 new object[] { model });
         }
 
-        public Dictionary<string, string> update_multipath(string multipath, string model)
+        public dynamic update_multipath(string multipath, string model)
         {
             return API.Retrieve_JSON(@"/api/multi/" + multipath, "PUT", System.Reflection.MethodBase.GetCurrentMethod().Name,
                 Account, new List<string> { "model" },
                 new object[] { model });
         }
 
-        public Dictionary<string, string> copy_multipath(string multipath, string from, string to)
+        public dynamic copy_multipath(string multipath, string from, string to)
         {
             return API.Retrieve_JSON(@"/api/multi/" + multipath + @"/copy", "POST", System.Reflection.MethodBase.GetCurrentMethod().Name,
                 Account, new List<string> { "from", "to" },
                 new object[] { from, to });
         }
 
-        public Dictionary<string, string> get_description(string multipath)
+        public dynamic get_description(string multipath)
         {
             return API.Retrieve_JSON(@"/api/multi/" + multipath + @"/description", "GET", System.Reflection.MethodBase.GetCurrentMethod().Name,
                 Account, new List<string> { },
                 new object[] { });
         }
 
-        public Dictionary<string, string> change_description(string multipath, string model)
+        public dynamic change_description(string multipath, string model)
         {
             return API.Retrieve_JSON(@"/api/multi/" + multipath + @"/description", "PUT", System.Reflection.MethodBase.GetCurrentMethod().Name,
                 Account, new List<string> { "model" },
                 new object[] { model });
         }
 
-        public Dictionary<string, string> delete_sub(string multipath, string srname)
+        public dynamic delete_sub(string multipath, string srname)
         {
             return API.Retrieve_JSON(@"/api/multi/" + multipath + @"/r/" + srname, "DELETE", System.Reflection.MethodBase.GetCurrentMethod().Name,
                 Account, new List<string> { },
                 new object[] { });
         }
 
-        public Dictionary<string, string> get_sub(string multipath, string srname)
+        public dynamic get_sub(string multipath, string srname)
         {
             return API.Retrieve_JSON(@"/api/multi/" + multipath + @"/r/" + srname, "GET", System.Reflection.MethodBase.GetCurrentMethod().Name,
                 Account, new List<string> { },
                 new object[] { });
         }
 
-        public Dictionary<string, string> add_sub(string multipath, string srname, string model)
+        public dynamic add_sub(string multipath, string srname, string model)
         {
             return API.Retrieve_JSON(@"/api/multi/" + multipath + @"/r/" + srname, "PUT", System.Reflection.MethodBase.GetCurrentMethod().Name,
                 Account, new List<string> { "model" },
                 new object[] { model });
         }
 
-        public Dictionary<string, string> rename_multi(string multipath, string from, string to)
+        public dynamic rename_multi(string multipath, string from, string to)
         {
             return API.Retrieve_JSON(@"/api/multi/" + multipath + @"/rename", "POST", System.Reflection.MethodBase.GetCurrentMethod().Name,
                 Account, new List<string> { "from", "to" },

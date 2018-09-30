@@ -11,14 +11,17 @@ namespace csReddit
         public string warning;
 
         private Account Account;
+        private API API;
+
         public Moderation(Account Account)
         {
             this.Account = Account;
+            this.API = new API();
         }
 
         public Moderation() : this(null) { }
 
-        public Dictionary<string, string> about_log(string after, string before, int count, string show, string target, 
+        public dynamic about_log(string after, string before, int count, string show, string target, 
             string type, string subreddit = "", int limit = 25, string mod = "")
         {
             return API.Retrieve_JSON((subreddit != "" ? @"/r/" + subreddit : "") + @"/about/log.json", "GET", System.Reflection.MethodBase.GetCurrentMethod().Name,
@@ -82,7 +85,7 @@ namespace csReddit
                 new object[] { id, "json" }) != "");
         }
 
-        public Dictionary<string, string> stylesheet(string subreddit = "")
+        public dynamic stylesheet(string subreddit = "")
         {
             return API.Retrieve_JSON((subreddit != "" ? @"/r/" + subreddit : "") + @"/stylesheet", "GET", System.Reflection.MethodBase.GetCurrentMethod().Name,
                 Account, new List<string> { },

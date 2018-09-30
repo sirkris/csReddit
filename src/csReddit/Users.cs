@@ -11,19 +11,22 @@ namespace csReddit
         public string warning;
 
         private Account Account;
+        private API API;
+
         public Users(Account Account)
         {
             this.Account = Account;
+            this.API = new API();
         }
 
-        public Dictionary<string, string> friend(string container, string name, string note, string permissions, string type)
+        public dynamic friend(string container, string name, string note, string permissions, string type)
         {
             return API.Retrieve_JSON(@"/api/friend", "POST", System.Reflection.MethodBase.GetCurrentMethod().Name,
                 Account, new List<string> { "container", "note", "permissions", "type", "api_type" },
                 new object[] { container, note, permissions, type, "json" });
         }
 
-        public Dictionary<string, string> setpermissions(string name, string permissions, string type, string subreddit = "")
+        public dynamic setpermissions(string name, string permissions, string type, string subreddit = "")
         {
             return API.Retrieve_JSON((subreddit != "" ? @"/r/" + subreddit : "")
                 + @"/api/setpermissions", "POST", System.Reflection.MethodBase.GetCurrentMethod().Name,
@@ -31,7 +34,7 @@ namespace csReddit
                 new object[] { name, permissions, type, "json" });
         }
 
-        public Dictionary<string, string> unfriend(string container, string id, string name, string type)
+        public dynamic unfriend(string container, string id, string name, string type)
         {
             return API.Retrieve_JSON(@"/api/unfriend", "POST", System.Reflection.MethodBase.GetCurrentMethod().Name,
                 Account, new List<string> { "container", "id", "name", "type" },
@@ -46,14 +49,14 @@ namespace csReddit
             return API.to_bool(ret);
         }
 
-        public Dictionary<string, string> about(string username)
+        public dynamic about(string username)
         {
             return API.Retrieve_JSON(@"/user/" + username + @"/about.json", "GET",
                 System.Reflection.MethodBase.GetCurrentMethod().Name,
                 Account, new List<string> { }, new object[] { });
         }
 
-        public Dictionary<string, string> get_user(string username, string where, string show, string sort, string t, 
+        public dynamic get_user(string username, string where, string show, string sort, string t, 
             string after, string before, int count = 0, int limit = 25)
         {
             return API.Retrieve_JSON(@"/user/" + username + @"/" + where, "GET",

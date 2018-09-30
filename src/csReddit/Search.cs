@@ -11,13 +11,15 @@ namespace csReddit
         public string warning;
 
         private Account Account;
+        private API API;
 
         public Search(Account Account)
         {
             this.Account = Account;
+            this.API = new API();
         }
 
-        public Dictionary<string, string> search(string after, string before, string q, bool restrict_sr, string sort, 
+        public dynamic search(string after, string before, string q, bool restrict_sr, string sort, 
             string syntax, string t, string subreddit = "", int count = 0, int limit = 25, string show = "")
         {
             return API.Retrieve_JSON((subreddit != "" ? @"/r/" + subreddit : "") + @"/search.json", "GET", System.Reflection.MethodBase.GetCurrentMethod().Name,
