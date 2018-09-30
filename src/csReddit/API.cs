@@ -8,7 +8,7 @@ namespace csReddit
 {
     public class API
     {
-        public string baseurl = @"http://www.reddit.com";
+        public string baseurl = @"https://oauth.reddit.com";
         public string last_error = null;
         public string last_status = null;
 
@@ -60,9 +60,22 @@ namespace csReddit
                 Type t = Type.GetType("csReddit.REST");
                 MethodInfo method = t.GetMethod(rest_method, BindingFlags.Public | BindingFlags.Static);
 
-                ret = (Dictionary<string, string>)method.Invoke(null, new object[] {
-                baseurl + @"/" + path, combine_vars( vars, vals ), Account.cookies, Account.authheaders
-                });
+                int retry = 10;
+                do
+                {
+                    ret = (Dictionary<string, string>) method.Invoke(null, new object[] {
+                        Account.accessToken, baseurl + @"/" + path, combine_vars( vars, vals ), Account.cookies, Account.authheaders, new Dictionary<string, string>()
+                    });
+
+                    if (ret == null)
+                    {
+                        retry--;
+                        if (retry > 0)
+                        {
+                            System.Threading.Thread.Sleep(30000);
+                        }
+                    }
+                } while (ret == null && retry > 0);
             }
             catch (Exception e)
             {
@@ -82,9 +95,22 @@ namespace csReddit
                 Type t = Type.GetType("csReddit.REST");
                 MethodInfo method = t.GetMethod(rest_method, BindingFlags.Public | BindingFlags.Static);
 
-                ret = (Dictionary<string, string>)method.Invoke(null, new object[] {
-                baseurl + @"/" + path, combine_vars( vars, vals ), Account.cookies, Account.authheaders, files
-                });
+                int retry = 10;
+                do
+                {
+                    ret = (Dictionary<string, string>) method.Invoke(null, new object[] {
+                        Account.accessToken, baseurl + @"/" + path, combine_vars( vars, vals ), Account.cookies, Account.authheaders, files
+                    });
+
+                    if (ret == null)
+                    {
+                        retry--;
+                        if (retry > 0)
+                        {
+                            System.Threading.Thread.Sleep(30000);
+                        }
+                    }
+                } while (ret == null && retry > 0);
             }
             catch (Exception e)
             {
@@ -96,6 +122,11 @@ namespace csReddit
 
         public string Parse_Status(Dictionary<string, string> ret, Account Account, string caller_method)
         {
+            if (ret == null)
+            {
+                ret = new Dictionary<string, string>();
+            }
+
             if (ret.ContainsKey("StatusCode") == false)
             {
                 last_error = "ERROR in API.Retrieve_JSON from " + caller_method + " : No status code returned!";

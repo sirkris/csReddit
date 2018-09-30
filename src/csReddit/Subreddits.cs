@@ -47,22 +47,26 @@ namespace csReddit
                 new object[] { Convert.ToBoolean(include_over_18), query });
         }
 
-        public dynamic site_admin(bool allow_top, bool css_on_cname, string description, bool exclude_banned_modqueue, 
-            string header_title, string lang, string link_type, string name, bool over_18, string prev_description_id, 
-            string prev_public_description_id, string prev_submit_text_id, string public_description, bool public_traffic, 
-            bool show_cname_sidebar, string show_media, string spam_comments, string spam_links, string spam_selfposts, string sr, 
-            string submit_link_label, string submit_text, string submit_text_label, string title, string type, string wikimode, 
-            int comment_score_hide_mins = 0, int wiki_edit_age = 0, int wiki_edit_karma = 0)
+        // Note - "description" refers to the sidebar, "public_description" refers to the description.  --Kris
+        // See:  https://www.reddit.com/r/redditdev/comments/1k8i2h/change_sidebar_via_api/
+        public dynamic site_admin(bool allow_discovery, bool allow_images, bool allow_post_crossposts, bool allow_top, bool allow_videos, bool collapse_deleted_comments,
+            int comment_score_hide_mins, string description, bool exclude_banned_modqueue, bool free_form_reports, string header_title, bool hide_ads, string key_color,
+            string lang, string link_type, string name, bool over_18, string public_description, bool show_media, bool show_media_preview, string spam_comments,
+            string spam_links, string spam_selfposts, bool spoilers_enabled, string sr, string r, string submit_link_label, string submit_text, string submit_text_label,
+            string suggested_comment_sort, string theme_sr, bool theme_sr_update, string title, string type, string wikimode, int wiki_edit_age = 0,
+            int wiki_edit_karma = 0, string modhash = "")
         {
             return API.Retrieve_JSON(@"/api/site_admin", "POST", System.Reflection.MethodBase.GetCurrentMethod().Name,
-                Account, new List<string> { "allow_top", "css_on_cname", "description", "exclude_banned_modqueue", "header_title", "lang", "link_type", "name", 
-                    "over_18", "prev_description_id", "prev_public_description_id", "prev_submit_text_id", "public_description", "public_traffic", "show_cname_sidebar", 
-                    "show_media", "spam_comments", "spam_links", "spam_selfposts", "sr", "submit_link_label", "submit_text", "submit_text_label", "title", "type", "wikimode", 
-                    "comment_score_hide_mins", "wiki_edit_age", "wiki_edit_karma", "api_type" },
-                new object[] { Convert.ToBoolean(allow_top), Convert.ToBoolean(css_on_cname), description, Convert.ToBoolean(exclude_banned_modqueue), header_title, lang, link_type, 
-                    name, Convert.ToBoolean(over_18), prev_description_id, prev_public_description_id, prev_submit_text_id, public_description, Convert.ToBoolean(public_traffic), 
-                    Convert.ToBoolean(show_cname_sidebar), show_media, spam_comments, spam_links, spam_selfposts, sr, submit_link_label, submit_text, submit_text_label, title, 
-                    type, wikimode, comment_score_hide_mins.ToString(), wiki_edit_age.ToString(), wiki_edit_karma.ToString(), "json" });
+                Account, new List<string> { "allow_discovery", "allow_images", "allow_post_crossposts", "allow_top", "allow_videos", "collapse_deleted_comments", "comment_score_hide_mins", 
+                    "description", "exclude_banned_modqueue", "free_form_reports", "header_title", "hide_ads", "key_color", "lang", "link_type", "name", "over_18", "public_description", 
+                    "show_media", "show_media_preview", "spam_comments", "spam_links", "spam_selfposts", "spoilers_enabled", "sr", "r", "submit_link_label", "submit_text", "submit_text_label", 
+                    "suggested_comment_sort", "theme_sr", "theme_sr_update", "title", "type", "wikimode", "wiki_edit_age", "wiki_edit_karma", "modhash", "api_type" },
+                new object[] { allow_discovery.ToString(), allow_images.ToString(), allow_post_crossposts.ToString(), allow_top.ToString(), 
+                    allow_videos.ToString(), collapse_deleted_comments.ToString(), comment_score_hide_mins.ToString(), description, exclude_banned_modqueue.ToString(), 
+                    free_form_reports.ToString(), header_title, hide_ads.ToString(), key_color, lang, link_type, name, over_18.ToString(), public_description, 
+                    show_media.ToString(), show_media_preview.ToString(), spam_comments, spam_links, spam_selfposts, spoilers_enabled.ToString(), sr, r, 
+                    submit_link_label, submit_text, submit_text_label, suggested_comment_sort, theme_sr, theme_sr_update.ToString(), title, type, wikimode, 
+                    wiki_edit_age.ToString(), wiki_edit_karma.ToString(), modhash, "json" });
         }
 
         public dynamic submit_text(string subreddit = "")
