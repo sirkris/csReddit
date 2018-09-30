@@ -27,6 +27,8 @@ namespace csReddit
         public string id;
         public bool has_mod_mail;
 
+        public string accessToken;
+
         internal string pass;
 
         public CookieContainer cookies;
@@ -38,15 +40,14 @@ namespace csReddit
 
         public dynamic profileData;
 
-        public Account(bool login = false, string username = "", string password = "")
+        public Account(string accessToken = null)
         {
             error = "";
             warning = "";
 
-            if (login == true)
-            {
-                Login(username, password);
-            }
+            this.accessToken = accessToken;
+
+            LoadData();
         }
 
         public bool CheckValidation(Dictionary<string, string> validate)
@@ -57,6 +58,39 @@ namespace csReddit
             return (error == "");
         }
 
+        private bool LoadData()
+        {
+            cookies = new CookieContainer();
+            if (cookiecollection != null)
+            {
+                cookies.Add(cookiecollection);
+            }
+            
+            profileData = me();
+            return true;
+            authheaders = new Dictionary<string, string>();
+            authheaders.Add("X-Modhash", modhash);
+
+            has_mail = Convert.ToBoolean(profileData["has_mail"]);
+            name = profileData["name"];
+            created = Convert.ToInt32(profileData["created"]);
+            modhash = profileData["modhash"];
+            created_utc = Convert.ToInt32(profileData["created_utc"]);
+            link_karma = Convert.ToInt32(profileData["link_karma"]);
+            comment_karma = Convert.ToInt32(profileData["comment_karma"]);
+            over_18 = Convert.ToBoolean(profileData["over_18"]);
+            is_gold = Convert.ToBoolean(profileData["is_gold"]);
+            is_mod = Convert.ToBoolean(profileData["is_mod"]);
+            has_verified_email = Convert.ToBoolean(profileData["has_verified_email"]);
+            id = profileData["id"];
+            has_mod_mail = Convert.ToBoolean(profileData["has_mod_mail"]);
+
+            error = "";
+
+            return true;
+        }
+
+        // DEPRECATED - Reddit API no longer supports direct login.  Use OAuth instead.  --Kris
         public bool Login(string username, string password)
         {
             if (username.Trim().ToLower().Substring(0, 3) == @"/u/")
@@ -111,9 +145,9 @@ namespace csReddit
             }
         }
 
-        public bool clear_sessions(string dest)
+        public bool clear_sessions(string accessToken, string dest)
         {
-            Dictionary<string, string> ret = REST.POSTC(out cookiecollection, @"http://www.reddit.com/api/clear_sessions",
+            Dictionary<string, string> ret = REST.POSTC(out cookiecollection, accessToken, @"http://www.reddit.com/api/clear_sessions",
                 @"dest=" + dest + @"&curpass=" + pass + @"&api_type=json", cookies, authheaders);
 
             if (ret["StatusCode"] == "200")
@@ -142,7 +176,7 @@ namespace csReddit
             user = (user == "" ? name : user);
             passwd = (passwd == "" ? passwd : pass);
 
-            Dictionary<string, string> ret = REST.POST(@"http://www.reddit.com/api/delete_user",
+            Dictionary<string, string> ret = REST.POST(accessToken, @"http://www.reddit.com/api/delete_user",
                 @"confirm=" + confirm.ToString() + @"&delete_message=" + delete_message + @"&passwd=" + passwd + @"user=" + user
                 + @"&api_type=json", cookies, authheaders);
 
@@ -160,7 +194,7 @@ namespace csReddit
 
         public dynamic me()
         {
-            Dictionary<string, string> ret = REST.GET(@"http://www.reddit.com/api/me.json", "", cookies, authheaders);
+            Dictionary<string, string> ret = REST.GET(accessToken, @"http://www.reddit.com/api/me.json", "", cookies, authheaders);
 
             if (ret["StatusCode"] != "200")
             {
@@ -188,7 +222,7 @@ namespace csReddit
 
         public bool register(string captcha, string iden, string passwd, bool rem, string user, string email = "")
         {
-            Dictionary<string, string> ret = REST.POSTC(out cookiecollection, @"http://www.reddit.com/api/register",
+            Dictionary<string, string> ret = REST.POSTC(out cookiecollection, accessToken, @"http://www.reddit.com/api/register",
                 @"captcha=" + captcha + @"&email=" + email + @"&iden=" + iden + @"&passwd=" + passwd + @"&passwd2=" + passwd
                 + @"&rem=" + rem.ToString() + @"&user=" + user
                 + @"&api_type=json", cookies, authheaders);
@@ -216,7 +250,7 @@ namespace csReddit
 
         public bool update(string email, string newpass, bool verify)
         {
-            Dictionary<string, string> ret = REST.POST(@"http://www.reddit.com/api/update",
+            Dictionary<string, string> ret = REST.POST(accessToken, @"http://www.reddit.com/api/update",
                 @"curpass=" + pass + @"&email=" + email + @"&newpass=" + newpass + @"&verify=" + verify.ToString() + @"&verpass=" + newpass
                 + @"&api_type=json", cookies, authheaders);
 

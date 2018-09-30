@@ -28,6 +28,13 @@ namespace csReddit
                 new object[] { comment, context, depth.ToString(), limit.ToString(), sort, "json" });
         }
 
+        public dynamic comments(string article, string subreddit = "", bool showmore = true, string sort = "top")
+        {
+            return API.Retrieve_JSON((subreddit != "" ? @"/r/" + subreddit : "") + @"/comments/" + article + @".json", "GET", System.Reflection.MethodBase.GetCurrentMethod().Name,
+                Account, new List<string> { "showmore", "sort", "api_type" },
+                new object[] { Convert.ToBoolean(showmore), sort, "json" });
+        }
+
         public dynamic hot(string after, string before, int count, int limit, string show, string target, string subreddit = "")
         {
             return API.Retrieve_JSON((subreddit != "" ? @"/r/" + subreddit : "") + @"/hot.json", "GET", System.Reflection.MethodBase.GetCurrentMethod().Name,
@@ -53,7 +60,7 @@ namespace csReddit
          */
         public string random(string subreddit = "")
         {
-            Dictionary<string, string> ret = REST.GET(@"http://www.reddit.com"
+            Dictionary<string, string> ret = REST.GET(Account.accessToken, @"http://www.reddit.com"
                 + (subreddit != "" ? @"/r/" + subreddit : "") + @"/random",
                 "", Account.cookies, Account.authheaders);
 

@@ -11,6 +11,19 @@ namespace csReddit
 {
     public static class REST
     {
+        public static HttpWebResponse Query(string accessToken, string method, string URL, string Params = "", CookieContainer cookies = default(CookieContainer),
+            Dictionary<string, string> headers = default(Dictionary<string, string>), Dictionary<string, string> files = default(Dictionary<string, string>))
+        {
+            if (headers == null)
+            {
+                headers = new Dictionary<string, string>();
+            }
+
+            headers.Add("Authorization", "bearer " + accessToken);
+
+            return Query(method, URL, Params, cookies, headers, files);
+        }
+
         public static HttpWebResponse Query(string method, string URL, string Params = "", CookieContainer cookies = default(CookieContainer), Dictionary<string, string> headers = default(Dictionary<string, string>), Dictionary<string, string> files = default(Dictionary<string, string>))
         {
             switch (method.ToUpper().Trim())
@@ -198,6 +211,11 @@ namespace csReddit
 
         public static Dictionary<string, string> ProcessQueryResponse(HttpWebResponse response)
         {
+            if (response == null)
+            {
+                return null;
+            }
+
             /* We really only need the body and *maybe* the status, but this will allow for easier debugging without returning the entire raw response object.  --Kris */
             Dictionary<string, string> ret = new Dictionary<string, string>();
 
@@ -220,6 +238,12 @@ namespace csReddit
         /* Overload that saves cookies.  --Kris */
         public static Dictionary<string, string> ProcessQueryResponse(HttpWebResponse response, out CookieCollection cookiecollection)
         {
+            cookiecollection = null;
+            if (response == null)
+            {
+                return null;
+            }
+
             /* We really only need the body and *maybe* the status, but this will allow for easier debugging without returning the entire raw response object.  --Kris */
             Dictionary<string, string> ret = new Dictionary<string, string>();
 
@@ -344,52 +368,52 @@ namespace csReddit
             return validate;
         }
 
-        public static Dictionary<string, string> GET(string URL, string Params = "", CookieContainer cookies = default(CookieContainer), 
-            Dictionary<string, string> headers = default(Dictionary<string, string>))
-        {
-            return ProcessQueryResponse(Query("GET", URL, Params, cookies, headers));
-        }
-
-        public static Dictionary<string, string> GETC(out CookieCollection cookiecollection, string URL, string Params = "", CookieContainer cookies = default(CookieContainer),
-            Dictionary<string, string> headers = default(Dictionary<string, string>))
-        {
-            return ProcessQueryResponse(Query("GET", URL, Params, cookies, headers), out cookiecollection);
-        }
-
-        public static Dictionary<string, string> POST(string URL, string Params = "", CookieContainer cookies = default(CookieContainer),
+        public static Dictionary<string, string> GET(string accessToken, string URL, string Params = "", CookieContainer cookies = default(CookieContainer),
             Dictionary<string, string> headers = default(Dictionary<string, string>), Dictionary<string, string> files = default(Dictionary<string, string>))
         {
-            return ProcessQueryResponse(Query("POST", URL, Params, cookies, headers, files));
+            return ProcessQueryResponse(Query(accessToken, "GET", URL, Params, cookies, headers));
         }
 
-        public static Dictionary<string, string> POSTC(out CookieCollection cookiecollection, string URL, string Params = "", CookieContainer cookies = default(CookieContainer),
+        public static Dictionary<string, string> GETC(out CookieCollection cookiecollection, string accessToken, string URL, string Params = "", CookieContainer cookies = default(CookieContainer),
             Dictionary<string, string> headers = default(Dictionary<string, string>), Dictionary<string, string> files = default(Dictionary<string, string>))
         {
-            return ProcessQueryResponse(Query("POST", URL, Params, cookies, headers, files), out cookiecollection);
+            return ProcessQueryResponse(Query(accessToken, "GET", URL, Params, cookies, headers), out cookiecollection);
         }
 
-        public static Dictionary<string, string> PUT(string URL, string Params = "", CookieContainer cookies = default(CookieContainer),
+        public static Dictionary<string, string> POST(string accessToken, string URL, string Params = "", CookieContainer cookies = default(CookieContainer),
             Dictionary<string, string> headers = default(Dictionary<string, string>), Dictionary<string, string> files = default(Dictionary<string, string>))
         {
-            return ProcessQueryResponse(Query("PUT", URL, Params, cookies, headers, files));
+            return ProcessQueryResponse(Query(accessToken, "POST", URL, Params, cookies, headers, files));
         }
 
-        public static Dictionary<string, string> PUTC(out CookieCollection cookiecollection, string URL, string Params = "", CookieContainer cookies = default(CookieContainer),
+        public static Dictionary<string, string> POSTC(out CookieCollection cookiecollection, string accessToken, string URL, string Params = "", CookieContainer cookies = default(CookieContainer),
             Dictionary<string, string> headers = default(Dictionary<string, string>), Dictionary<string, string> files = default(Dictionary<string, string>))
         {
-            return ProcessQueryResponse(Query("PUT", URL, Params, cookies, headers, files), out cookiecollection);
+            return ProcessQueryResponse(Query(accessToken, "POST", URL, Params, cookies, headers, files), out cookiecollection);
         }
 
-        public static Dictionary<string, string> DELETE(string URL, string Params = "", CookieContainer cookies = default(CookieContainer),
+        public static Dictionary<string, string> PUT(string accessToken, string URL, string Params = "", CookieContainer cookies = default(CookieContainer),
             Dictionary<string, string> headers = default(Dictionary<string, string>), Dictionary<string, string> files = default(Dictionary<string, string>))
         {
-            return ProcessQueryResponse(Query("DELETE", URL, Params, cookies, headers, files));
+            return ProcessQueryResponse(Query(accessToken, "PUT", URL, Params, cookies, headers, files));
         }
 
-        public static Dictionary<string, string> DELETEC(out CookieCollection cookiecollection, string URL, string Params = "", CookieContainer cookies = default(CookieContainer),
+        public static Dictionary<string, string> PUTC(out CookieCollection cookiecollection, string accessToken, string URL, string Params = "", CookieContainer cookies = default(CookieContainer),
             Dictionary<string, string> headers = default(Dictionary<string, string>), Dictionary<string, string> files = default(Dictionary<string, string>))
         {
-            return ProcessQueryResponse(Query("DELETE", URL, Params, cookies, headers, files), out cookiecollection);
+            return ProcessQueryResponse(Query(accessToken, "PUT", URL, Params, cookies, headers, files), out cookiecollection);
+        }
+
+        public static Dictionary<string, string> DELETE(string accessToken, string URL, string Params = "", CookieContainer cookies = default(CookieContainer),
+            Dictionary<string, string> headers = default(Dictionary<string, string>), Dictionary<string, string> files = default(Dictionary<string, string>))
+        {
+            return ProcessQueryResponse(Query(accessToken, "DELETE", URL, Params, cookies, headers, files));
+        }
+
+        public static Dictionary<string, string> DELETEC(out CookieCollection cookiecollection, string accessToken, string URL, string Params = "", CookieContainer cookies = default(CookieContainer),
+            Dictionary<string, string> headers = default(Dictionary<string, string>), Dictionary<string, string> files = default(Dictionary<string, string>))
+        {
+            return ProcessQueryResponse(Query(accessToken, "DELETE", URL, Params, cookies, headers, files), out cookiecollection);
         }
 
         public static dynamic json_decode(string json)

@@ -47,6 +47,55 @@ namespace csReddit
                 new object[] { page, revision });
         }
 
+        public dynamic pageDiscussions(string page, string after, string before, int count = 0, int limit = 25, string show = "all", string sr_detail = "", string subreddit = "")
+        {
+            return API.Retrieve_JSON((subreddit != "" ? @"/r/" + subreddit : "") + @"/wiki/discussions/" + page, "GET", System.Reflection.MethodBase.GetCurrentMethod().Name,
+                Account, new List<string> { "after", "before", "count", "limit", "show", "sr_detail" },
+                new object[] { after, before, count.ToString(), limit.ToString(), show, sr_detail });
+        }
+
+        public dynamic pages(string subreddit = "")
+        {
+            return API.Retrieve_JSON((subreddit != "" ? @"/r/" + subreddit : "") + @"/wiki/pages", "GET", System.Reflection.MethodBase.GetCurrentMethod().Name,
+                Account, new List<string> { },
+                new object[] { });
+        }
+
+        public dynamic revisions(string after, string before, int count = 0, int limit = 25, string show = "all", string sr_detail = "", string subreddit = "")
+        {
+            return API.Retrieve_JSON((subreddit != "" ? @"/r/" + subreddit : "") + @"/wiki/revisions", "GET", System.Reflection.MethodBase.GetCurrentMethod().Name,
+                Account, new List<string> { "after", "before", "count", "limit", "show", "sr_detail" },
+                new object[] { after, before, count.ToString(), limit.ToString(), show, sr_detail });
+        }
+
+        public dynamic pageRevisions(string page, string after, string before, int count = 0, int limit = 25, string show = "all", string sr_detail = "", string subreddit = "")
+        {
+            return API.Retrieve_JSON((subreddit != "" ? @"/r/" + subreddit : "") + @"/wiki/revisions/" + page, "GET", System.Reflection.MethodBase.GetCurrentMethod().Name,
+                Account, new List<string> { "after", "before", "count", "limit", "show", "sr_detail" },
+                new object[] { after, before, count.ToString(), limit.ToString(), show, sr_detail });
+        }
+
+        public dynamic getPageSettings(string page, string subreddit = "")
+        {
+            return API.Retrieve_JSON((subreddit != "" ? @"/r/" + subreddit : "") + @"/wiki/settings/" + page, "GET", System.Reflection.MethodBase.GetCurrentMethod().Name,
+                Account, new List<string> { },
+                new object[] { });
+        }
+
+        public dynamic postPageSettings(string page, bool listed, int permlevel, string subreddit = "")
+        {
+            return API.Retrieve_JSON((subreddit != "" ? @"/r/" + subreddit : "") + @"/wiki/settings/" + page, "POST", System.Reflection.MethodBase.GetCurrentMethod().Name,
+                Account, new List<string> { "listed", "permlevel" },
+                new object[] { listed.ToString(), permlevel.ToString() });
+        }
+
+        public dynamic page(string page, string v = "", string v2 = "", string subreddit = "")
+        {
+            return API.Retrieve_JSON((subreddit != "" ? @"/r/" + subreddit : "") + @"/wiki/" + page, "GET", System.Reflection.MethodBase.GetCurrentMethod().Name,
+                Account, new List<string> { "v", "v2" },
+                new object[] { v, v2 });
+        }
+
         public Wiki() : this(null) { }
     }
 }

@@ -69,13 +69,23 @@ namespace csReddit
             InitSingletons();
         }
 
+        public Reddit(string accessToken, bool logging = false, bool failSilently = true, Assembly csLogPass = null, Type csLogTypePass = null, object csLogInstancePass = null)
+        {
+            if (logging == true)
+            {
+                csLogEnabled = InitLog(failSilently, csLogPass, csLogTypePass, csLogInstancePass);
+            }
+
+            InitSingletons(accessToken);
+        }
+                                                                                                                                                                                                                     
         public Reddit() : this(true) { }
 
-        internal void InitSingletons()
+        internal void InitSingletons(string accessToken = null)
         {
             API = new API();
 
-            Account = new Account();
+            Account = new Account(accessToken);
             Apps = new Apps(Account);
             Captcha = new Captcha(Account);
             Flair = new Flair(Account);

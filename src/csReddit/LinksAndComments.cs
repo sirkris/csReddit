@@ -65,7 +65,7 @@ namespace csReddit
 
         public dynamic morechildren(string children, string link_id, string sort)
         {
-            return API.Retrieve_JSON(@"/api/morechildren", "POST", System.Reflection.MethodBase.GetCurrentMethod().Name,
+            return API.Retrieve_JSON(@"/api/morechildren", "GET", System.Reflection.MethodBase.GetCurrentMethod().Name,
                 Account, new List<string> { "children", "link_id", "sort", "api_type" },
                 new object[] { children, link_id, sort, "json" });
         }
@@ -100,18 +100,12 @@ namespace csReddit
 
         // A helpful discussion regarding the captcha requirement:  https://www.reddit.com/r/redditdev/comments/1w6117/how_do_people_making_bots_get_past_the_captcha/
         // Pass the URL via the text argument for link posts.  --Kris
-        public dynamic submit(string captcha, string extension, string iden, string kind, bool resubmit, 
-            bool sendreplies, string sr, string text, string title)
+        public dynamic submit(string captcha, string extension, string kind, bool resubmit, 
+            bool sendreplies, string sr, string text, string title, string url)
         {
-            string label = "text";
-            if (kind.ToLower().Equals("link"))
-            {
-                label = "url";
-            }
-
             return API.Retrieve_JSON(@"/api/submit", "POST", System.Reflection.MethodBase.GetCurrentMethod().Name,
-                Account, new List<string> { "captcha", "extension", "iden", "kind", "resubmit", "sendreplies", "sr", label, "title", "api_type" },
-                new object[] { captcha, extension, iden, kind, resubmit.ToString(), sendreplies.ToString(), sr, text, title, "json" });
+                Account, new List<string> { "captcha", "extension", "kind", "resubmit", "sendreplies", "sr", "text", "title", "url", "api_type" },
+                new object[] { captcha, extension, kind, resubmit.ToString(), sendreplies.ToString(), sr, text, title, url, "json" });
         }
 
         public bool unhide(string id)
